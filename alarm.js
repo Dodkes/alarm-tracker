@@ -1,12 +1,18 @@
 let check, soundBeep
 let alarmFound = false
 const eventArray = ['interface down', 'Interface Down', 'Node Down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State']
+let a = document.querySelector("#contentFrame").contentWindow.document.body
+let b = a.querySelector("#mashup_frame").contentWindow.document.body
+let c = b.querySelector('#compositionManager > #isc_CompositionManager_0_wrapper > #isc_0 > #isc_1 > #isc_2 > #isc_15 > #isc_1R > #isc_1S > #isc_1T > #isc_1U > #isc_30 > #isc_3O > #isc_3P > #isc_3Q > #isc_3R > #isc_3S > #isc_3T > #isc_3V')
+let d = c.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document.body
+let e = d.querySelector('#oprEventBrowserRoot > opr-ngx-root > opr-ngx-event-browser > main > opr-ngx-active-events-view > opr-ng1-event-table > #opr-event-table-component-0 > div > div.right-panel > #table-0 > #table-0_body > #table-0_scroll-container')
+let alarmsContainerArray = e.childNodes
 
 const startChecking = () => {
     clearInterval(check)
     clearInterval(soundBeep)
     check = setInterval(looping, 5000)
-    alert('ALARM CHECK STARTED')
+    alert('PRESS OK TO START SCRIPT')
 }
 
 const stopChecking = () => {
@@ -34,10 +40,8 @@ setButton('START', 'green', '50px', 'start', startChecking)
 
 
 const looping = () => {
-    let x = document.querySelectorAll('[id$="_col-title"]')
-    console.log(x[1])
-    for (let i = 0; i < x.length; i++) {
-        let content = x[i].textContent
+    for (let i = 0; i < alarmsContainerArray.length; i++) {
+        let content = alarmsContainerArray[i].textContent
         for (y of eventArray) {
             if (content.includes(y)){
                 alarmFound = true
