@@ -1,5 +1,5 @@
-# alarmChecker
-Checking alarms on console with alert function once critical is found. Therefore no need to watch console.
+# alarmTracker
+Tracking alarms on console with alert function once critical is found. Therefore no need to watch console all the time.
 
 In my job there are hundreds of alarms in console. Many of them are irrelevant.
 Because of this, it is easy to miss important events. To prevent missing I have made this script.
