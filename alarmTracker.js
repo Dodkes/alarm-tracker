@@ -1,6 +1,19 @@
 let check, soundBeep, alarmsContainerArray
 let alarmFound = false
 const eventArray = ['interface down', 'Interface Down', 'Node Down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check']
+///MAIN CONTAINER
+const container = document.createElement('div')
+document.body.appendChild(container)
+container.style.position = 'fixed'
+container.style.top = '0'
+container.style.left = '0'
+container.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
+container.style.color = 'white'
+container.style.zIndex = '1'
+container.style.height = '45px'
+container.style.width = '460px'
+container.style.borderRadius = '0 0 30px 0'
+container.style.border = '2px solid black'
 
 const eventDirectoryRefresh = () => {
     let a = document.querySelector("#contentFrame").contentWindow.document.body
@@ -14,51 +27,71 @@ const eventDirectoryRefresh = () => {
 const startChecking = () => {
     clearInterval(check)
     clearInterval(soundBeep)
-    check = setInterval(looping, 5000)
-    alert('PRESS OK TO START SCRIPT')
+    check = setInterval(looping, Number(interval.value) * 1000)
+    looping()
+    alert('PRESS OK TO START TRACKING')
 }
 
 const stopChecking = () => {
     clearInterval(check)
     clearInterval(soundBeep)
-    alert('ALARM CHECK STOPPED')
+    display.textContent = 'READY TO START'
+    display.style.backgroundColor = '#3399ff'
+    alert('ALARM TRACKER STOPPED')
 }
 
-const setButton = (text, backColor, leftGap, elId, func) => {
-    let newButton = document.createElement('button')
-    newButton.textContent = text
-    document.body.appendChild(newButton)
-    newButton.style.backgroundColor = backColor
-    newButton.id = elId
-    newButton.style.color = 'white'
-    newButton.style.position = 'fixed'
-    newButton.style.top = '0'
-    newButton.style.left = leftGap
-    newButton.style.zIndex = '1'
-    newButton.addEventListener('click', func)
+const createElement = (elementType, text, backColor, elId, func) => {
+    let newElement = document.createElement(elementType)
+    newElement.textContent = text
+    container.appendChild(newElement)
+    newElement.style.backgroundColor = backColor
+    newElement.id = elId
+    newElement.style.color = 'white'
+    newElement.style.display = 'inline-block'
+    newElement.style.zIndex = '1'
+    newElement.style.height = 'auto'
+    newElement.style.boxSizing = 'border-box'
+    newElement.addEventListener('click', func)
 }
+//BUTTONS
+createElement('button', 'STOP', 'red', 'stop', stopChecking)
+createElement('button', 'START', 'green', 'start', startChecking)
 
-setButton('STOP', 'red', '0', 'stop', stopChecking)
-setButton('START', 'green', '50px', 'start', startChecking)
+//INPUT
+createElement('input', null, 'transparent', 'interval', null)
+const interval = document.getElementById('interval')
+interval.style.border = 'none'
+interval.style.borderBottom = '2px solid black'
+interval.style.outline = 'none'
+interval.style.width = '60px'
+interval.style.color = '#99ff33'
+interval.value = 60
+interval.setAttribute('type', 'number')
 
+//DISPLAY
+createElement('div', 'READY TO START', '#3399ff', 'display', null)
+let display = document.getElementById('display')
+display.style.border = '2px solid black'
 
 const looping = () => {
     eventDirectoryRefresh ()
+    display.textContent = checkTime()
+
     for (let i = 0; i < alarmsContainerArray.length; i++) {
         let content = alarmsContainerArray[i].textContent
         for (y of eventArray) {
             if (content.includes(y)){
                 alarmFound = true
+                foundAlarms(y)
                 console.log('%c Found: '+ y, 'background: black; color: #ff9999; border 1px solid red')
             }
         }
     }
-    if (alarmFound === true) {
+    if (alarmFound) {
         soundBeep = setInterval(beep, 1000)
         clearInterval(check)
         alarmFound = false
     }
-    lastCheckConsole()
 }
 
 function beep() {
@@ -66,8 +99,15 @@ function beep() {
     snd.play();
 }
 
-function lastCheckConsole () {
-    let hour = new Date().getHours()
-    let minute = new Date().getMinutes()
-    console.log('%c Last alarm check performed at ' + hour + 'h:' + minute + 'm ', 'background: black; color: #bada55; border: 1px solid #bada55')
+function checkTime () {
+    let date = new Date()
+    let hour = date.getHours()
+    let minute = date.getMinutes()
+    let sec = date.getSeconds()
+    return 'Last alarm check performed at ' + hour + 'h:' + minute + 'm ' + sec + 's'
+}
+
+function foundAlarms(alarm) {
+    display.style.backgroundColor = '#ff3399'
+    display.textContent = alarm
 }
