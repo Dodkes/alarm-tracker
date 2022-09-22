@@ -1,35 +1,26 @@
-let check, soundBeep, alarmsContainerArray
+let check, soundBeep, alarmsContainerArray, date, hour, minute, sec ,a, b, c, d, e
 let alarmFound = false
 const eventArray = ['interface down', 'Interface Down', 'Node Down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check']
 ///MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
-container.style.position = 'fixed'
-container.style.top = '0'
-container.style.left = '0'
-container.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
-container.style.color = 'white'
-container.style.zIndex = '1'
-container.style.height = '45px'
-container.style.width = '460px'
-container.style.borderRadius = '0 0 30px 0'
-container.style.border = '2px solid black'
+container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); color: white; z-index: 1; height: 45px; width: 460px; border-radius: 0 0 30px 0; border: 2px solid black;'
+
 
 const eventDirectoryRefresh = () => {
-    let a = document.querySelector("#contentFrame").contentWindow.document.body
-    let b = a.querySelector("#mashup_frame").contentWindow.document.body
-    let c = b.querySelector('#compositionManager > #isc_CompositionManager_0_wrapper > #isc_0 > #isc_1 > #isc_2 > #isc_15 > #isc_1R > #isc_1S > #isc_1T > #isc_1U > #isc_30 > #isc_3O > #isc_3P > #isc_3Q > #isc_3R > #isc_3S > #isc_3T > #isc_3V')
-    let d = c.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document.body
-    let e = d.querySelector('#oprEventBrowserRoot > opr-ngx-root > opr-ngx-event-browser > main > opr-ngx-active-events-view > opr-ng1-event-table > #opr-event-table-component-0 > div > div.right-panel > #table-0 > #table-0_body > #table-0_scroll-container')
+    a = document.querySelector("#contentFrame").contentWindow.document.body
+    b = a.querySelector("#mashup_frame").contentWindow.document.body
+    c = b.querySelector('#compositionManager > #isc_CompositionManager_0_wrapper > #isc_0 > #isc_1 > #isc_2 > #isc_15 > #isc_1R > #isc_1S > #isc_1T > #isc_1U > #isc_30 > #isc_3O > #isc_3P > #isc_3Q > #isc_3R > #isc_3S > #isc_3T > #isc_3V')
+    d = c.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document.body
+    e = d.querySelector('#oprEventBrowserRoot > opr-ngx-root > opr-ngx-event-browser > main > opr-ngx-active-events-view > opr-ng1-event-table > #opr-event-table-component-0 > div > div.right-panel > #table-0 > #table-0_body > #table-0_scroll-container')
     alarmsContainerArray = e.childNodes
 }
 
 const startChecking = () => {
     clearInterval(check)
     clearInterval(soundBeep)
-    check = setInterval(looping, Number(interval.value) * 1000)
+    check = setInterval(looping, Number(inputInterval.value) * 1000)
     looping()
-    alert('PRESS OK TO START TRACKING')
 }
 
 const stopChecking = () => {
@@ -37,20 +28,14 @@ const stopChecking = () => {
     clearInterval(soundBeep)
     display.textContent = 'READY TO START'
     display.style.backgroundColor = '#3399ff'
-    alert('ALARM TRACKER STOPPED')
 }
 
 const createElement = (elementType, text, backColor, elId, func) => {
     let newElement = document.createElement(elementType)
     newElement.textContent = text
     container.appendChild(newElement)
-    newElement.style.backgroundColor = backColor
     newElement.id = elId
-    newElement.style.color = 'white'
-    newElement.style.display = 'inline-block'
-    newElement.style.zIndex = '1'
-    newElement.style.height = 'auto'
-    newElement.style.boxSizing = 'border-box'
+    newElement.style.cssText = `background-color: ${backColor}; color: white; display: inline-block; z-index: 1; height: auto; box-sizing: border-box;`
     newElement.addEventListener('click', func)
 }
 //BUTTONS
@@ -59,14 +44,10 @@ createElement('button', 'START', 'green', 'start', startChecking)
 
 //INPUT
 createElement('input', null, 'transparent', 'interval', null)
-const interval = document.getElementById('interval')
-interval.style.border = 'none'
-interval.style.borderBottom = '2px solid black'
-interval.style.outline = 'none'
-interval.style.width = '60px'
-interval.style.color = '#99ff33'
-interval.value = 60
-interval.setAttribute('type', 'number')
+const inputInterval = document.getElementById('interval')
+inputInterval.style.cssText = 'border: none; border-bottom: 2px solid black; outline: none; width: 60px; color: lightgreen;'
+inputInterval.value = 60
+inputInterval.setAttribute('type', 'number')
 
 //DISPLAY
 createElement('div', 'READY TO START', '#3399ff', 'display', null)
@@ -100,11 +81,11 @@ function beep() {
 }
 
 function checkTime () {
-    let date = new Date()
-    let hour = date.getHours()
-    let minute = date.getMinutes()
-    let sec = date.getSeconds()
-    return 'Last alarm check performed at ' + hour + 'h:' + minute + 'm ' + sec + 's'
+    date = new Date()
+    hour = date.getHours()
+    minute = date.getMinutes()
+    sec = date.getSeconds()
+    return 'Last alarm check performed at ' + hour + 'h:' + minute + 'm:' + sec + 's'
 }
 
 function foundAlarms(alarm) {
