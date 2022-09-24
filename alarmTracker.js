@@ -61,7 +61,7 @@ const looping = () => {
     for (let i = 0; i < alarmsContainerArray.length; i++) {
         let content = alarmsContainerArray[i].textContent
         for (y of eventArray) {
-            if (content.includes(y)){
+            if (content.includes(y) && content.includes('Open')){
                 alarmFound = true
                 foundAlarms(y)
                 console.log('%c Found: '+ y, 'background: black; color: #ff9999; border 1px solid red')
