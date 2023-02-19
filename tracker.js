@@ -1,11 +1,10 @@
-let check, soundBeep, alarmsContainerArray, date, hour, minute, sec ,a, b, c, d, e
+let check, soundBeep, alarmsContainerArray, date, hour, minute, sec ,a, b, c, d, e, titleIndex, CIIndex, stateIndex
 let alarmFound = false
-const eventArray = ['interface down', 'Interface Down', 'Node Down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'Full System']
+const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'full system backup']
 ///MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
 container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); color: white; z-index: 1; height: 45px; width: 560px; border-radius: 0 0 30px 0; border: 2px solid black;'
-
 
 const eventDirectoryRefresh = () => {
     a = document.querySelector("#contentFrame").contentWindow.document.body
@@ -14,6 +13,11 @@ const eventDirectoryRefresh = () => {
     d = c.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document.body
     e = d.querySelector('#oprEventBrowserRoot > opr-ngx-root > opr-ngx-event-browser > main > opr-ngx-active-events-view > opr-ng1-event-table > #opr-event-table-component-0 > div > div.right-panel > #table-0 > #table-0_body > #table-0_scroll-container')
     alarmsContainerArray = e.childNodes
+
+    titleIndex = getCell('-title')
+    CIIndex = getCell('-relatedCi')
+    stateIndex = getCell('-lifeCycleState')
+
 }
 
 const startChecking = () => {
@@ -66,9 +70,10 @@ const looping = () => {
     display.textContent = checkTime()
 
     for (let i = 0; i < alarmsContainerArray.length; i++) {
-        let content = alarmsContainerArray[i].textContent
+        let content = alarmsContainerArray[i].childNodes[titleIndex].innerText
+        let state = alarmsContainerArray[i].childNodes[stateIndex].textContent
         for (y of eventArray) {
-            if (content.includes(y) && content.includes('Open')){
+            if (content.toUpperCase().includes(y.toUpperCase()) && state.includes('Open')){
                 alarmFound = true
                 foundAlarms(y)
                 console.log('%c Found: '+ y, 'background: black; color: #ff9999; border 1px solid red')
@@ -100,4 +105,14 @@ function checkTime () {
 function foundAlarms(alarm) {
     display.style.backgroundColor = '#ff3399'
     display.textContent = alarm
+}
+
+
+
+function getCell (endedID) {
+    for (i = 0; i < alarmsContainerArray[0].childNodes.length; i++) {
+        if (alarmsContainerArray[0].childNodes[i].id.includes(endedID)) {
+            return i
+        }
+    }
 }
