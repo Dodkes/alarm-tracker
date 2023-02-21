@@ -1,4 +1,4 @@
-let check, soundBeep, alarmsContainerArray, date, hour, minute, sec ,a, b, c, d, e, titleIndex, CIIndex, stateIndex
+let check, soundBeep, alarmsContainerArray, date, hour, minute, sec ,a, b, c, d, e, titleIndex, ciIndex, stateIndex
 let alarmFound = false
 const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'full system backup']
 ///MAIN CONTAINER
@@ -15,7 +15,7 @@ const eventDirectoryRefresh = () => {
     alarmsContainerArray = e.childNodes
 
     titleIndex = getCell('-title')
-    CIIndex = getCell('-relatedCi')
+    ciIndex = getCell('-relatedCi')
     stateIndex = getCell('-lifeCycleState')
 
 }
@@ -72,6 +72,8 @@ const looping = () => {
     for (let i = 0; i < alarmsContainerArray.length; i++) {
         let content = alarmsContainerArray[i].childNodes[titleIndex].innerText
         let state = alarmsContainerArray[i].childNodes[stateIndex].textContent
+        let CI = alarmsContainerArray[i].childNodes[ciIndex]
+
         for (y of eventArray) {
             if (content.toUpperCase().includes(y.toUpperCase()) && state.includes('Open')){
                 alarmFound = true
@@ -79,6 +81,8 @@ const looping = () => {
                 console.log('%c Found: '+ y, 'background: black; color: #ff9999; border 1px solid red')
             }
         }
+        setButton(content, CI)
+
     }
     if (alarmFound) {
         soundBeep = setInterval(beep, 1000)
@@ -107,12 +111,25 @@ function foundAlarms(alarm) {
     display.textContent = alarm
 }
 
-
-
 function getCell (endedID) {
     for (i = 0; i < alarmsContainerArray[0].childNodes.length; i++) {
         if (alarmsContainerArray[0].childNodes[i].id.includes(endedID)) {
             return i
         }
+    }
+}
+
+//if founds command use posible alarm
+function setButton (title, CI) {
+    title = title.toLowerCase()
+    if (title.includes('average cpu load is higher')) {
+        console.log(title + ' on ' + CI)
+        navigator.clipboard.writeText('urp_remote_run ' + CI.innerText +' top -b -n1 | less')
+    }
+    if (title.includes('usage of filesystem')) {
+
+    }  
+    if (title.includes('no ip connection')) {
+
     }
 }
