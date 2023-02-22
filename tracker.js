@@ -121,15 +121,64 @@ function getCell (endedID) {
 
 //if founds command use posible alarm
 function setButton (title, CI) {
-    title = title.toLowerCase()
-    if (title.includes('average cpu load is higher')) {
-        console.log(title + ' on ' + CI)
-        navigator.clipboard.writeText('urp_remote_run ' + CI.innerText +' top -b -n1 | less')
-    }
-    if (title.includes('usage of filesystem')) {
+    if (CI.childNodes.length === 3) {
 
-    }  
-    if (title.includes('no ip connection')) {
+        title = title.toLowerCase()
+        if (title.includes('average cpu load is higher')) {
+            let button = document.createElement('button')
+            button.id = CI.innerText
+            button.textContent = 'Command'
+            CI.appendChild(button)
+            button.addEventListener('click', ()=> {
+            navigator.clipboard.writeText('urp_remote_run ' + button.id +' top -b -n1 | less')
+            buttonBlink(button)
+        })
 
-    }
+        }
+        if (title.includes('usage of filesystem')) {
+            let FS = title.split(' ')
+            
+            let button = document.createElement('button')
+            button.id = CI.innerText
+            button.textContent = 'Command'
+            CI.appendChild(button)
+            button.addEventListener('click', ()=>{ 
+                navigator.clipboard.writeText('urp_remote_run ' + button.id + ' df -Ph ' + FS[3])
+                buttonBlink(button)
+            })
+        }  
+
+        if (title.includes('disk space utilization')) {
+            let FS = title.split(' ')
+            if (FS[6].includes('/')) {
+                let button = document.createElement('button')
+                button.id = CI.innerText
+                button.textContent = 'Command'
+                CI.appendChild(button)
+                button.addEventListener('click', ()=>{ 
+                    navigator.clipboard.writeText('urp_remote_run ' + button.id + ' df -Ph ' + FS[6])
+                    buttonBlink(button)
+                })
+            }
+        }  
+
+        if (title.includes('no ip connection') || title.includes('host connection state') || title.includes('dns check') || title.includes('site down') || title.includes('node down')) {
+            let button = document.createElement('button')
+            button.id = CI.innerText
+            button.textContent = 'Ping'
+            CI.appendChild(button)
+            button.addEventListener('click', ()=> {
+                navigator.clipboard.writeText('ping ' + button.id)
+                buttonBlink(button)
+            })
+        }
+}
+
+}
+
+function buttonBlink (button) {
+    button.style.backgroundColor = 'green'
+    setTimeout(() => {
+    button.style.backgroundColor = 'white'
+    }, 1000);
 }
