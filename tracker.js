@@ -1,4 +1,4 @@
-let check, soundBeep, alarmsContainerArray, date, hour, minute, sec ,a, b, c, d, e, titleIndex, ciIndex, stateIndex
+let check, soundBeep, alarmsContainerArray, date, hour, minute, sec ,a, b, c, d, titleIndex, ciIndex, stateIndex
 let alarmFound = false
 const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'full system backup']
 ///MAIN CONTAINER
@@ -7,12 +7,11 @@ document.body.appendChild(container)
 container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); color: white; z-index: 1; height: 45px; width: 560px; border-radius: 0 0 30px 0; border: 2px solid black;'
 
 const eventDirectoryRefresh = () => {
-    a = document.querySelector("#contentFrame").contentWindow.document.body
-    b = a.querySelector("#mashup_frame").contentWindow.document.body
-    c = b.querySelector('#compositionManager > #isc_CompositionManager_0_wrapper > #isc_0 > #isc_1 > #isc_2 > #isc_15 > #isc_1R > #isc_1S > #isc_1T > #isc_1U > #isc_30 > #isc_3O > #isc_3P > #isc_3Q > #isc_3R > #isc_3S > #isc_3T > #isc_3V')
-    d = c.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document.body
-    e = d.querySelector('#oprEventBrowserRoot > opr-ngx-root > opr-ngx-event-browser > main > opr-ngx-active-events-view > opr-ng1-event-table > #opr-event-table-component-0 > div > div.right-panel > #table-0 > #table-0_body > #table-0_scroll-container')
-    alarmsContainerArray = e.childNodes
+    a = document.querySelector("#contentFrame").contentWindow.document
+    b = a.querySelector('#mashup_frame').contentWindow.document
+    c = b.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document
+    d = c.querySelector('#table-0_scroll-container')
+    alarmsContainerArray = d.children
 
     titleIndex = getCell('-title')
     ciIndex = getCell('-relatedCi')
