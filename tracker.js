@@ -1,6 +1,6 @@
 let check, soundBeep, alarmsContainerArray, date, hour, minute, sec ,a, b, c, d, titleIndex, ciIndex, stateIndex
 let alarmFound = false
-const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'full system backup']
+const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check']
 ///MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
@@ -161,16 +161,34 @@ function setButton (title, CI) {
             }
         }  
 
-        if (title.includes('no ip connection') || title.includes('host connection state') || title.includes('dns check') || title.includes('site down') || title.includes('node down')) {
+        if (title.includes('host connection state') || 
+            title.includes('dns check') || 
+            title.includes('site down') || 
+            title.includes('node down')) {
+                let button = document.createElement('button')
+                button.id = CI.innerText
+                button.textContent = 'Ping'
+                CI.appendChild(button)
+                button.addEventListener('click', ()=> {
+                    navigator.clipboard.writeText('ping ' + button.id)
+                    buttonBlink(button)
+                })
+        }
+
+        if (title.includes('no ip connection')) {
             let button = document.createElement('button')
+            let FS = title.split(' ')
             button.id = CI.innerText
             button.textContent = 'Ping'
             CI.appendChild(button)
             button.addEventListener('click', ()=> {
-                navigator.clipboard.writeText('ping ' + button.id)
+                navigator.clipboard.writeText('ping ' + FS[5])
                 buttonBlink(button)
             })
         }
+
+
+
 }
 
 }
