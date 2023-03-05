@@ -33,34 +33,34 @@ const stopChecking = () => {
     display.style.backgroundColor = '#3399ff'
 }
 
-const createElement = (elementType, text, backColor, elId, func) => {
+const createElement = (elementType, text, backColor, elId, appendedTo, func) => {
     let newElement = document.createElement(elementType)
     newElement.textContent = text
-    container.appendChild(newElement)
+    appendedTo.appendChild(newElement)
     newElement.id = elId
     newElement.style.cssText = `background-color: ${backColor}; color: white; display: inline-block; z-index: 1; height: auto; box-sizing: border-box;`
     newElement.addEventListener('click', func)
 }
 //BUTTONS
-createElement('button', 'STOP', 'red', 'stop', stopChecking)
-createElement('button', 'START', 'green', 'start', startChecking)
+createElement('button', 'STOP', 'red', 'stop', container, stopChecking)
+createElement('button', 'START', 'green', 'start', container, startChecking)
 
 //INPUT
-createElement('input', null, 'transparent', 'interval', null)
+createElement('input', null, 'transparent', 'interval', container, null)
 const inputInterval = document.getElementById('interval')
 inputInterval.style.cssText = 'border: none; border-bottom: 2px solid black; outline: none; width: 60px; color: lightgreen;'
 inputInterval.value = 60
 inputInterval.setAttribute('type', 'number')
 //Checkbox <p> element
-createElement('p', 'Sound alert', 'black', null, null)
+createElement('p', 'Sound alert', 'black', null, container, null)
 //Checkbox
-createElement('input', null, 'black', 'checkbox', null)
+createElement('input', null, 'black', 'checkbox', container, null)
 const checkBox = document.getElementById('checkbox')
 checkBox.setAttribute('type', 'checkbox')
 checkBox.checked = true
 
 //DISPLAY
-createElement('div', 'READY TO START', '#3399ff', 'display', null)
+createElement('div', 'READY TO START', '#3399ff', 'display', container, null)
 let display = document.getElementById('display')
 display.style.border = '2px solid black'
 
@@ -102,7 +102,7 @@ function checkTime () {
     hour = date.getHours()
     minute = date.getMinutes()
     sec = date.getSeconds()
-    return 'Last alarm check performed at ' + hour + 'h:' + minute + 'm:' + sec + 's'
+    return 'Alarm check performed: ' + hour + 'h : ' + minute + 'm : ' + sec + 's'
 }
 
 function foundAlarms(alarm) {
@@ -120,82 +120,66 @@ function getCell (endedID) {
 
 //if founds command use posible alarm
 function setButton (title, CI) {
-    if (CI.childNodes.length === 3) {
+    if (CI.childNodes.length === 3) { //if there is no button created
 
         title = title.toLowerCase()
         if (title.includes('average cpu load is higher')) {
-            let button = document.createElement('button')
-            button.id = CI.innerText
-            button.textContent = 'Command'
-            CI.appendChild(button)
-            button.addEventListener('click', ()=> {
-            navigator.clipboard.writeText('urp_remote_run ' + button.id +' top -b -n1 | less')
-            buttonBlink(button)
-        })
+            createElement('button', 'CPU check', 'black', CI.innerText, CI, (event)=>{
+                navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' top -b -n1 | less')
+                buttonBlink(event.target)
+            })
 
         }
+
         if (title.includes('usage of filesystem')) {
             let FS = title.split(' ')
-            
-            let button = document.createElement('button')
-            button.id = CI.innerText
-            button.textContent = 'Command'
-            CI.appendChild(button)
-            button.addEventListener('click', ()=>{ 
-                navigator.clipboard.writeText('urp_remote_run ' + button.id + ' df -Ph ' + FS[3])
-                buttonBlink(button)
+            createElement('button', 'FS check', 'black', CI.innerText, CI, (event)=>{
+                navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -Ph ' + FS[3])
+                buttonBlink(event.target)
             })
         }  
 
         if (title.includes('disk space utilization')) {
             let FS = title.split(' ')
             if (FS[6].includes('/')) {
-                let button = document.createElement('button')
-                button.id = CI.innerText
-                button.textContent = 'Command'
-                CI.appendChild(button)
-                button.addEventListener('click', ()=>{ 
-                    navigator.clipboard.writeText('urp_remote_run ' + button.id + ' df -Ph ' + FS[6])
-                    buttonBlink(button)
+                createElement('button', 'FS check', 'black', CI.innerText, CI, (event)=> {
+                    navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -Ph ' + FS[6])
+                    buttonBlink(event.target)
                 })
             }
-        }  
+        }
 
         if (title.includes('host connection state') || 
             title.includes('dns check') || 
             title.includes('site down') || 
             title.includes('node down')) {
-                let button = document.createElement('button')
-                button.id = CI.innerText
-                button.textContent = 'Ping'
-                CI.appendChild(button)
-                button.addEventListener('click', ()=> {
-                    navigator.clipboard.writeText('ping ' + button.id)
-                    buttonBlink(button)
+                createElement('button', 'Ping', 'black', CI.innerText, CI, (event)=>{
+                    navigator.clipboard.writeText('ping ' + event.target.id)
+                    buttonBlink(event.target)
                 })
         }
 
         if (title.includes('no ip connection')) {
-            let button = document.createElement('button')
             let FS = title.split(' ')
-            button.id = CI.innerText
-            button.textContent = 'Ping'
-            CI.appendChild(button)
-            button.addEventListener('click', ()=> {
+
+            createElement('button', 'Ping', 'black', CI.innerText, CI, (event)=>{
                 navigator.clipboard.writeText('ping ' + FS[5])
-                buttonBlink(button)
+                buttonBlink(event.target)
             })
         }
 
-
-
-}
-
+        if (title.includes('full system backup failed for last')) {
+            createElement('button', 'Backup check', 'black', CI.innerText, CI, (event)=>{
+                navigator.clipboard.writeText('urp_remote_view '+ event.target.id +' /rzoper/bibit/log/bibit_summary.log | grep backup')
+                buttonBlink(event.target)
+            })
+        }
+    }
 }
 
 function buttonBlink (button) {
-    button.style.backgroundColor = 'green'
+    button.style.backgroundColor = 'lightgreen'
     setTimeout(() => {
-    button.style.backgroundColor = 'white'
+    button.style.backgroundColor = 'black'
     }, 1000);
 }
