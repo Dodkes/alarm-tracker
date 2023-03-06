@@ -174,6 +174,42 @@ function setButton (title, CI) {
                 buttonBlink(event.target)
             })
         }
+
+        if (title.includes('interface down')) {
+            let FS = title.split(' ')
+            createElement('button', 'CI', 'black', CI.innerText, CI, (event)=> {
+                navigator.clipboard.writeText(event.target.id)
+                buttonBlink(event.target)
+            })
+            createElement('button', 'Interface check', 'black', null, CI, (event)=> {
+                navigator.clipboard.writeText('show interface ' + FS[3])
+                buttonBlink(event.target)
+            })
+        }
+
+        if (title.includes('holding time expired')) {
+            let FS = title.split(' ')
+            createElement('button', 'CI', 'black', CI.innerText, CI, (event)=> {
+                navigator.clipboard.writeText(event.target.id)
+                buttonBlink(event.target)
+            })
+            createElement('button', 'Interface check', 'black', null, CI, (event)=> {
+                navigator.clipboard.writeText('show interface ' + FS[FS.length - 6].substr(1, 8))
+                buttonBlink(event.target)
+            })
+        }
+
+        if (title.includes('reachability up -> down')) {
+            let FS = title.split(' ')
+            createElement('button', 'CI', 'black', CI.innerText, CI, (event)=> {
+                navigator.clipboard.writeText(event.target.id)
+                buttonBlink(event.target)
+            })
+            createElement('button', 'Track check', 'black', null, CI, (event)=> {
+                navigator.clipboard.writeText('show track ' + FS[FS.length - 5])
+                buttonBlink(event.target)
+            })
+        }
     }
 }
 
@@ -183,3 +219,5 @@ function buttonBlink (button) {
     button.style.backgroundColor = 'black'
     }, 1000);
 }
+
+///SNMP service
