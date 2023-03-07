@@ -1,16 +1,16 @@
 # alarmTracker
-Tracking alarms on console with alert function once critical is found. Therefore no need to watch console all the time.
 
-In my job there are hundreds of alarms in console. Many of them are irrelevant.
-Because of this, it is easy to miss important events. To prevent missing I have made this script.
+Script created as alarm miss prevention, speed up & simplify checking process.
 
-To use this script, it has to be put in web console. Script basically monitors events in console and alerts user by sound, which indicates there is/are important
-event/s, that should be taken care of.
+How script works:
+Script is deployed by putting in web console. Script basically monitors events in console and alerts user, which indicates there is/are important
+event/s, that should be taken care of. Script also provides command copy buttons.
 
-How it works:
+How to use it:
 - open OBM and select desired view
-- put script in console and press ENTER
-- 2 buttons (STOP, START) will occur on the left top
-- script is handled by these 2 buttons, after clicking each button, browser will alert you that script is started/stopped
-- there is an eventArray that will be filled with important alarms
-- once script meet any item of eventArray, it will alert user
+- put script in web console (F12) and press ENTER
+- UI will occur in the left top corner
+- script is handled by 2 buttons, after clicking each button, browser will notify you that script is started/stopped
+- there is an eventArray that will be fullfilled with important alarms
+- once script finds any item of eventArray, it will alert user and stops the script
+- for each "command" alarm, the specific copy button is appended
