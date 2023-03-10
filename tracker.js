@@ -250,5 +250,3 @@ function buttonBlink (button) {
     button.style.backgroundColor = 'black'
     }, 1000);
 }
-
-//db log
