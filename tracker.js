@@ -147,8 +147,14 @@ function setButton (title, CI) {
             }
         }
 
+        if (title.includes('snmp is not defined as a service')) {
+            createElement('button', 'Check service', 'black', CI.innerText, CI, (event) => {
+                navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' service snmpd status')
+                buttonBlink(event.target)
+            })
+        }
+
         if (title.includes('host connection state') || 
-            title.includes('dns check') || 
             title.includes('site down') || 
             title.includes('node down')) {
                 createElement('button', 'Ping', 'black', CI.innerText, CI, (event) => {
@@ -157,10 +163,18 @@ function setButton (title, CI) {
                 })
         }
 
+        if (title.includes('dns check')) {
+            let FS = title.split(' ')
+            createElement('button', 'Ping', 'black', FS[3], CI, (event) => {
+                navigator.clipboard.writeText('ping ' + event.target.id)
+                buttonBlink(event.target)
+            })
+        }
+
         if (title.includes('no ip connection')) {
             let FS = title.split(' ')
-            createElement('button', 'Ping', 'black', CI.innerText, CI, (event) => {
-                navigator.clipboard.writeText('ping ' + FS[5])
+            createElement('button', 'Ping', 'black', FS[5], CI, (event) => {
+                navigator.clipboard.writeText('ping ' + event.target.id)
                 buttonBlink(event.target)
             })
         }
@@ -171,8 +185,8 @@ function setButton (title, CI) {
                 buttonBlink(event.target)
             })
         }
-
-        if (title.includes('interface down')) {
+        //NETWORK COMMAND BUTTONS
+        if (title.includes('interface down') && !title.includes('syslog')) {
             let FS = title.split(' ')
             createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
@@ -180,6 +194,18 @@ function setButton (title, CI) {
             })
             createElement('button', 'Interface check', 'black', null, CI, (event) => {
                 navigator.clipboard.writeText('show interface ' + FS[3])
+                buttonBlink(event.target)
+            })
+        }
+
+        if (title.includes('interface down') && title.includes('syslog')) {
+            let FS = title.split(' ')
+            createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
+                navigator.clipboard.writeText(event.target.id)
+                buttonBlink(event.target)
+            })
+            createElement('button', 'Interface check', 'black', null, CI, (event) => {
+                navigator.clipboard.writeText('show interface ' + FS[FS.length - 5].substr(1, 8))
                 buttonBlink(event.target)
             })
         }
@@ -217,4 +243,4 @@ function buttonBlink (button) {
     }, 1000);
 }
 
-///SNMP service
+//db log
