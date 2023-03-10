@@ -185,6 +185,14 @@ function setButton (title, CI) {
                 buttonBlink(event.target)
             })
         }
+
+        if (title.includes('dblog_all on virtualnode') || title.includes('archive system backup failed for last')) {
+            createElement('button', 'DB check', 'black', CI.innerText, CI, (event) => {
+                navigator.clipboard.writeText('urp_remote_view ' + event.target.id + ' /dcoper/bibit/log/bibit_summary.log | grep dblog')
+                buttonBlink(event.target)
+            })
+        }
+
         //NETWORK COMMAND BUTTONS
         if (title.includes('interface down') && !title.includes('syslog')) {
             let FS = title.split(' ')
