@@ -19,6 +19,7 @@ const eventDirectoryRefresh = () => {
 }
 
 const startChecking = () => {
+    display.style.backgroundColor = '#3399ff'
     clearInterval(check)
     clearInterval(soundBeep)
     check = setInterval(looping, Number(inputInterval.value) * 1000)
