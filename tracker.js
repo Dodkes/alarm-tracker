@@ -1,7 +1,7 @@
 let check, soundBeep, alarmsContainerArray, date, hour, minute, sec, a, b, c, d, titleIndex, ciIndex, stateIndex
 let alarmFound = false
 const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check']
-///MAIN CONTAINER
+//MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
 container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); color: white; z-index: 1; height: 45px; width: 560px; border-radius: 0 0 30px 0; border: 2px solid black;'
@@ -129,7 +129,7 @@ function setButton (title, CI) {
             })
         }
 
-        if (title.includes('usage of filesystem')) {
+        else if (title.includes('usage of filesystem')) {
             let FS = title.split(' ')
             createElement('button', 'FS check', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -Ph ' + FS[3])
@@ -137,7 +137,7 @@ function setButton (title, CI) {
             })
         }  
 
-        if (title.includes('disk space utilization')) {
+        else if (title.includes('disk space utilization')) {
             let FS = title.split(' ')
             if (FS[6].includes('/')) {
                 createElement('button', 'FS check', 'black', CI.innerText, CI, (event) => {
@@ -147,14 +147,14 @@ function setButton (title, CI) {
             }
         }
 
-        if (title.includes('snmp is not defined as a service')) {
+        else if (title.includes('snmp is not defined as a service')) {
             createElement('button', 'Check service', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' service snmpd status')
                 buttonBlink(event.target)
             })
         }
 
-        if (title.includes('host connection state') || 
+        else if (title.includes('host connection state') || 
             title.includes('site down') || 
             title.includes('node down')) {
                 createElement('button', 'Ping', 'black', CI.innerText, CI, (event) => {
@@ -163,7 +163,7 @@ function setButton (title, CI) {
                 })
         }
 
-        if (title.includes('dns check')) {
+        else if (title.includes('dns check')) {
             let FS = title.split(' ')
             createElement('button', 'Ping', 'black', FS[3], CI, (event) => {
                 navigator.clipboard.writeText('ping ' + event.target.id)
@@ -171,7 +171,7 @@ function setButton (title, CI) {
             })
         }
 
-        if (title.includes('no ip connection')) {
+        else if (title.includes('no ip connection')) {
             let FS = title.split(' ')
             createElement('button', 'Ping', 'black', FS[5], CI, (event) => {
                 navigator.clipboard.writeText('ping ' + event.target.id)
@@ -179,14 +179,14 @@ function setButton (title, CI) {
             })
         }
 
-        if (title.includes('full system backup failed for last')) {
+        else if (title.includes('full system backup failed for last')) {
             createElement('button', 'Backup check', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_view ' + event.target.id +' /rzoper/bibit/log/bibit_summary.log | grep backup')
                 buttonBlink(event.target)
             })
         }
 
-        if (title.includes('dblog_all on virtualnode') || title.includes('archive system backup failed for last')) {
+        else if (title.includes('dblog_all on virtualnode') || title.includes('archive system backup failed for last')) {
             createElement('button', 'DB check', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_view ' + event.target.id + ' /dcoper/bibit/log/bibit_summary.log | grep dblog')
                 buttonBlink(event.target)
@@ -194,7 +194,7 @@ function setButton (title, CI) {
         }
 
         //NETWORK COMMAND BUTTONS
-        if (title.includes('interface down') && !title.includes('syslog')) {
+        else if (title.includes('interface down') && !title.includes('syslog')) {
             let FS = title.split(' ')
             createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
@@ -206,7 +206,7 @@ function setButton (title, CI) {
             })
         }
 
-        if (title.includes('interface down') && title.includes('syslog')) {
+        else if (title.includes('interface down') && title.includes('syslog')) {
             let FS = title.split(' ')
             createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
@@ -218,7 +218,7 @@ function setButton (title, CI) {
             })
         }
 
-        if (title.includes('holding time expired')) {
+        else if (title.includes('holding time expired')) {
             let FS = title.split(' ')
             createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
@@ -230,7 +230,7 @@ function setButton (title, CI) {
             })
         }
 
-        if (title.includes('reachability up -> down')) {
+        else if (title.includes('reachability up -> down')) {
             let FS = title.split(' ')
             createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
