@@ -156,7 +156,8 @@ function setButton (title, CI) {
         }
 
         else if (title.includes('host connection state') || 
-            title.includes('site down') || 
+            title.includes('site down') ||
+            title.includes('since more than 600 seconds') ||
             title.includes('node down')) {
                 createElement('button', 'Ping', 'black', CI.innerText, CI, (event) => {
                     navigator.clipboard.writeText('ping ' + event.target.id)
