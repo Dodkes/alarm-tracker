@@ -11,6 +11,9 @@ const eventDirectoryRefresh = () => {
     b = a.querySelector('#mashup_frame').contentWindow.document
     c = b.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document
     d = c.querySelector('#table-0_scroll-container')
+    if (d === null) {
+        d = c.querySelector("#table-2_scroll-container")
+    }
     alarmsContainerArray = d.children
 
     titleIndex = getCell('-title')
