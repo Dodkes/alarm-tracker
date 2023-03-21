@@ -152,7 +152,7 @@ function setButton (title, CI) {
         }
 
         else if (title.includes('snmp is not defined as a service')) {
-            createElement('button', 'Check service', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'Service check', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' service snmpd status')
                 buttonBlink(event.target)
             })
