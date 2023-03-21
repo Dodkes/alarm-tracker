@@ -198,6 +198,13 @@ function setButton (title, CI) {
             })
         }
 
+        else if (title.includes('pcs error found')) {
+            createElement('button', 'PCS check', 'black', CI.innerText, CI, (event) => {
+                navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' pcs status')
+                buttonBlink(event.target)
+            })
+        }
+
         //NETWORK COMMAND BUTTONS
         else if (title.includes('interface down') && !title.includes('syslog')) {
             let FS = title.split(' ')
