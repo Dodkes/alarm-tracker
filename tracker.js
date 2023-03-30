@@ -205,6 +205,14 @@ function setButton (title, CI) {
             })
         }
 
+        else if (title.includes('disk inodes usage is')) {
+            let FS = title.split(' ')
+            createElement('button', 'FS check', 'black', CI.innerText, CI, (event) => {
+                navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -k ' + FS[9] + ' -i')
+                buttonBlink(event.target)
+            })
+        }
+
         //NETWORK COMMAND BUTTONS
         else if (title.includes('interface down') && !title.includes('syslog')) {
             let FS = title.split(' ')
