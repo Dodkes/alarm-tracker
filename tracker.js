@@ -13,7 +13,6 @@ const eventDirectoryRefresh = () => {
     d = c.querySelector('#table-0_scroll-container')
     if (d === null) {
         d = loopForAlarmsContainer(c)
-        alert('LOOPING')
     }
     alarmsContainerArray = d.children
 
