@@ -122,9 +122,10 @@ function getCell (endedID) {
 }
 
 //set command buttons
-function setButton (title, CI) {
+function setButton (baseTitle, CI) {
     if (CI.childNodes.length === 3) { //if there is no button/s created
-        title = title.toLowerCase()
+
+        title = baseTitle.toLowerCase()
 
         if (title.includes('average cpu load is higher')) {
             createElement('button', 'CPU check', 'black', CI.innerText, CI, (event) => {
@@ -210,6 +211,20 @@ function setButton (title, CI) {
             createElement('button', 'FS check', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -k ' + FS[9] + ' -i')
                 buttonBlink(event.target)
+            })
+        }
+        //WEBSITE CHECK BUTTONS
+        else if (title.includes('http response code for url')) {
+            let FS = baseTitle.split(' ')
+            createElement('button', 'URL check', 'black', FS[6], CI, (event) => {
+                window.open(event.target.id)
+            })
+        }
+
+        else if (title.includes('bad http response received for')) {
+            let FS = baseTitle.split(' ')
+            createElement('button', 'URL check', 'black', FS[5], CI, (event) => {
+                window.open(event.target.id)
             })
         }
 
