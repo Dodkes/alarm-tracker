@@ -12,13 +12,22 @@ const eventDirectoryRefresh = () => {
     c = b.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document
     d = c.querySelector('#table-0_scroll-container')
     if (d === null) {
-        d = c.querySelector("#table-2_scroll-container")
+        d = loopForAlarmsContainer(c)
+        alert('LOOPING')
     }
     alarmsContainerArray = d.children
 
     titleIndex = getCell('-title')
     ciIndex = getCell('-relatedCi')
     stateIndex = getCell('-lifeCycleState')
+}
+//if table alarms container is empty, looping over 0 - 9 to find whether it exists and returns existing container
+function loopForAlarmsContainer (c) {
+    for  (i = 0; i < 10; i++) {
+        if (c.querySelector('#table-' + i + '_scroll-container')) {
+            return c.querySelector('#table-' + i + '_scroll-container')
+        }
+    }
 }
 
 const startChecking = () => {
