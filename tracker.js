@@ -222,7 +222,7 @@ function setButton (baseTitle, CI) {
             })
         }
         //WEBSITE CHECK BUTTONS
-        else if (title.includes('http response code for url')) {
+        else if (title.includes('http response code for url') || title.includes('ok & no_errors not found')) {
             let FS = baseTitle.split(' ')
             createElement('button', 'URL check', 'black', FS[6], CI, (event) => {
                 window.open(event.target.id)
