@@ -129,12 +129,27 @@ function getCell (endedID) {
     }
 }
 
-//set command buttons
+//set buttons
 function setButton (baseTitle, CI) {
     if (CI.childNodes.length === 3) { //if there is no button/s created
-
         title = baseTitle.toLowerCase()
+        //ticket open check
+        
+        if (title.includes('no ip connection')) {
+            splitTitle = title.split(' ')
+            openedTicketCI = splitTitle[5]
+        } else if (title.includes('dns check')) {
+            splitTitle = title.split(' ')
+            openedTicketCI = splitTitle[3]
+        } else {
+            openedTicketCI = CI.innerText
+        }
 
+        createElement('button', 'T', 'grey', openedTicketCI, CI, (event) => {
+            window.open('https://boehringer.service-now.com/incident_list.do?sysparm_first_row=1&sysparm_query=state%3d1%5eORstate%3d2%5eORstate%3d3%5eGOTO123TEXTQUERY321%3d' + event.target.id + '+&sysparm_query_encoded=state%3d1%5eORstate%3d2%5eORstate%3d3%5eGOTO123TEXTQUERY321%3dtzoas00018+&sysparm_view=')
+        })
+
+        //commands copy buttons
         if (title.includes('average cpu load is higher')) {
             createElement('button', 'CPU check', 'black', CI.innerText, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' top -b -n1 | less')
