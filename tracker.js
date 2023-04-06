@@ -145,13 +145,15 @@ function setButton (baseTitle, CI) {
             openedTicketCI = CI.innerText
         }
 
+        let commandCI = CI.innerText
+
         createElement('button', 'T', 'grey', openedTicketCI, CI, (event) => {
             window.open('https://boehringer.service-now.com/incident_list.do?sysparm_first_row=1&sysparm_query=state%3d1%5eORstate%3d2%5eORstate%3d3%5eGOTO123TEXTQUERY321%3d' + event.target.id + '+&sysparm_query_encoded=state%3d1%5eORstate%3d2%5eORstate%3d3%5eGOTO123TEXTQUERY321%3dtzoas00018+&sysparm_view=')
         })
 
         //commands copy buttons
         if (title.includes('average cpu load is higher')) {
-            createElement('button', 'CPU check', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'CPU check', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' top -b -n1 | less')
                 buttonBlink(event.target)
             })
@@ -159,7 +161,7 @@ function setButton (baseTitle, CI) {
 
         else if (title.includes('usage of filesystem')) {
             let FS = title.split(' ')
-            createElement('button', 'FS check', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'FS check', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -Ph ' + FS[3])
                 buttonBlink(event.target)
             })
@@ -168,7 +170,7 @@ function setButton (baseTitle, CI) {
         else if (title.includes('disk space utilization')) {
             let FS = title.split(' ')
             if (FS[6].includes('/')) {
-                createElement('button', 'FS check', 'black', CI.innerText, CI, (event) => {
+                createElement('button', 'FS check', 'black', commandCI, CI, (event) => {
                     navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -Ph ' + FS[6])
                     buttonBlink(event.target)
                 })
@@ -176,7 +178,7 @@ function setButton (baseTitle, CI) {
         }
 
         else if (title.includes('snmp is not defined as a service')) {
-            createElement('button', 'Service check', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'Service check', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' service snmpd status')
                 buttonBlink(event.target)
             })
@@ -186,7 +188,7 @@ function setButton (baseTitle, CI) {
             title.includes('site down') ||
             title.includes('since more than 600 seconds') ||
             title.includes('node down')) {
-                createElement('button', 'Ping', 'black', CI.innerText, CI, (event) => {
+                createElement('button', 'Ping', 'black', commandCI, CI, (event) => {
                     navigator.clipboard.writeText('ping ' + event.target.id)
                     buttonBlink(event.target)
                 })
@@ -209,21 +211,21 @@ function setButton (baseTitle, CI) {
         }
 
         else if (title.includes('full system backup failed for last')) {
-            createElement('button', 'Backup check', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'Backup check', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_view ' + event.target.id +' /rzoper/bibit/log/bibit_summary.log | grep backup')
                 buttonBlink(event.target)
             })
         }
 
         else if (title.includes('dblog_all on virtualnode') || title.includes('archive system backup failed for last')) {
-            createElement('button', 'DB check', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'DB check', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_view ' + event.target.id + ' /dcoper/bibit/log/bibit_summary.log | grep dblog')
                 buttonBlink(event.target)
             })
         }
 
         else if (title.includes('pcs error found')) {
-            createElement('button', 'PCS check', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'PCS check', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' pcs status')
                 buttonBlink(event.target)
             })
@@ -231,7 +233,7 @@ function setButton (baseTitle, CI) {
 
         else if (title.includes('disk inodes usage is')) {
             let FS = title.split(' ')
-            createElement('button', 'FS check', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'FS check', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -k ' + FS[9] + ' -i')
                 buttonBlink(event.target)
             })
@@ -254,7 +256,7 @@ function setButton (baseTitle, CI) {
         //NETWORK COMMAND BUTTONS
         else if (title.includes('interface down') && !title.includes('syslog')) {
             let FS = title.split(' ')
-            createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'CI', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
                 buttonBlink(event.target)
             })
@@ -266,7 +268,7 @@ function setButton (baseTitle, CI) {
 
         else if (title.includes('interface down') && title.includes('syslog')) {
             let FS = title.split(' ')
-            createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'CI', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
                 buttonBlink(event.target)
             })
@@ -278,7 +280,7 @@ function setButton (baseTitle, CI) {
 
         else if (title.includes('holding time expired')) {
             let FS = title.split(' ')
-            createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'CI', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
                 buttonBlink(event.target)
             })
@@ -290,7 +292,7 @@ function setButton (baseTitle, CI) {
 
         else if (title.includes('reachability up -> down')) {
             let FS = title.split(' ')
-            createElement('button', 'CI', 'black', CI.innerText, CI, (event) => {
+            createElement('button', 'CI', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText(event.target.id)
                 buttonBlink(event.target)
             })
