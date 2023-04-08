@@ -253,6 +253,20 @@ function setButton (baseTitle, CI) {
             })
         }
 
+        else if (title.includes('url check was not successfull for')) {
+            let FS = baseTitle.split(' ')
+            createElement('button', 'URL check', 'black', FS.at(-1), CI, (event) => {
+                window.open(event.target.id)
+            })
+        }
+
+        else if (title.includes('error: http output code for')) {
+            let FS = baseTitle.split(' ')
+            createElement('button', 'URL check', 'black', FS.at(-3), CI, (event) => {
+                window.open(event.target.id)
+            })
+        }
+
         //NETWORK COMMAND BUTTONS
         else if (title.includes('interface down') && !title.includes('syslog')) {
             let FS = title.split(' ')
