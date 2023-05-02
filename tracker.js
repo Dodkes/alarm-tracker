@@ -210,6 +210,13 @@ function setButton (baseTitle, CI) {
             })
         }
 
+        else if (title.includes('event id 5719')) {
+            createElement('button', 'Ping', 'black', commandCI ,CI, (event) => {
+                navigator.clipboard.writeText('ping ' + event.target.id)
+                buttonBlink(event.target)
+            })
+        }
+
         else if (title.includes('full system backup failed for last')) {
             createElement('button', 'Backup check', 'black', commandCI, CI, (event) => {
                 navigator.clipboard.writeText('urp_remote_view ' + event.target.id +' /rzoper/bibit/log/bibit_summary.log | grep backup')
