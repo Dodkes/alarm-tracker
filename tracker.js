@@ -1,6 +1,6 @@
 let check, soundBeep, alarmsContainerArray, date, hour, minute, sec, a, b, c, d, titleIndex, ciIndex, stateIndex
 let alarmFound = false
-const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired']
+const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired', 'SDWAN API']
 //MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
