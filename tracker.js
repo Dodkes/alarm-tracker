@@ -187,7 +187,9 @@ function setButton (baseTitle, CI) {
         else if (title.includes('host connection state') || 
             title.includes('site down') ||
             title.includes('since more than 600 seconds') ||
-            title.includes('node down')) {
+            title.includes('node down') ||
+            title.includes('is disassociated from controller')) 
+            {
                 createElement('button', 'Ping', 'black', commandCI, CI, (event) => {
                     navigator.clipboard.writeText('ping ' + event.target.id)
                     buttonBlink(event.target)
