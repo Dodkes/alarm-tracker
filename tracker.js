@@ -187,8 +187,7 @@ function setButton (baseTitle, CI) {
         else if (title.includes('host connection state') || 
             title.includes('site down') ||
             title.includes('since more than 600 seconds') ||
-            title.includes('node down') ||
-            title.includes('is disassociated from controller')) 
+            title.includes('node down')) 
             {
                 createElement('button', 'Ping', 'black', commandCI, CI, (event) => {
                     navigator.clipboard.writeText('ping ' + event.target.id)
@@ -321,6 +320,22 @@ function setButton (baseTitle, CI) {
             })
             createElement('button', 'Track check', 'black', null, CI, (event) => {
                 navigator.clipboard.writeText('show track ' + FS[FS.length - 5])
+                buttonBlink(event.target)
+            })
+        }
+
+        else if (title.includes('is disassociated from controller') && !title.includes('rate correlation for')) {
+            let FS = title.split(' ')
+            createElement('button', 'Ping', 'black', commandCI, CI, (event) => {
+                navigator.clipboard.writeText('ping ' + FS[2])
+                buttonBlink(event.target)
+            })
+        }
+
+        else if (title.includes('rate correlation for apdisassociated: access point')) {
+            let FS = title.split(' ')
+            createElement('button', 'Ping', 'black', commandCI, CI, (event) => {
+                navigator.clipboard.writeText('ping '+ FS[6])
                 buttonBlink(event.target)
             })
         }
