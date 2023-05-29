@@ -167,6 +167,14 @@ function setButton (baseTitle, CI) {
             })
         }  
 
+        else if (title.includes('mongo-db: usage of filsystem is over')) {
+            let FS = title.split(' ')
+            createElement('button', 'FS check', 'black', commandCI, CI, (event) => {
+                navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' df -Ph ' + FS[10])
+                buttonBlink(event.target)
+            })
+        }
+
         else if (title.includes('disk space utilization')) {
             let FS = title.split(' ')
             if (FS[6].includes('/')) {
