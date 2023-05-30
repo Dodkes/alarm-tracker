@@ -254,6 +254,13 @@ function setButton (baseTitle, CI) {
                 buttonBlink(event.target)
             })
         }
+
+        else if (title.includes('num wal files:')) {
+            createElement('button', 'WAL check', 'black', commandCI, CI, (event) => {
+                navigator.clipboard.writeText('urp_remote_run ' + event.target.id + ' ls /var/lib/edb/as10/data/pg_wal/ | wc -l')
+                buttonBlink(event.target)
+            })
+        }
         //WEBSITE CHECK BUTTONS
         else if (title.includes('http response code for url') || title.includes('ok & no_errors not found')) {
             let FS = baseTitle.split(' ')
