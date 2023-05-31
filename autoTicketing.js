@@ -13,7 +13,19 @@ if (d === null) {
 alarmsContainerArray = d.children
 
 function runAutoticket () {
-    alarmsContainerArray[1].click()
+    for (let i = 0; i < alarmsContainerArray.length; i++) {
+        let alarmTextContent = alarmsContainerArray[i].textContent.toLowerCase()
+        let text = 'full system backup'
+        if (alarmTextContent.includes(text.toLowerCase())) {
+            console.log(text)
+            createTicket(alarmsContainerArray[i])
+            break
+        }
+    }
+}
+
+function createTicket (alarm) {
+    alarm.click()
     console.log('%c AUTOTICKET by xZitt - EVENT SELECTED', 'background: black; color: #33cc33; border 1px solid #33cc33')
 
     setTimeout(() => {
@@ -31,6 +43,7 @@ function runAutoticket () {
         console.log('%c AUTOTICKET by xZitt - TRANSFERRED TO SNOW', 'background: black; color: #33cc33; border 1px solid #33cc33')
     }, 15000);
 }
+
 
 const controlPanel = document.createElement('div')
 controlPanel.style.colo = 'white'
@@ -57,14 +70,19 @@ document.getElementById('input-interval').style.width = '50px'
 //Start button
 elementCreate('button', 'white', '#9ACD32', 'START')
 
+let dispatchInterval
 const startButton = document.getElementById('START')
 startButton.addEventListener('click', () => {
 
     if (startButton.textContent === 'START') {
         startButton.style.backgroundColor = '#FF6347'
         startButton.textContent = 'STOP'
-        runAutoticket()
+        dispatchInterval = setInterval(() => {
+            console.log('%c AUTOTICKET by xZitt - AUTOTICKET SEQUENCE STARTED', 'background: black; color: #33cc33; border 1px solid #33cc33')
+            runAutoticket()
+        }, Number(document.getElementById('input-interval').value) * 1000);
     } else if (startButton.textContent === 'STOP') {
+        clearInterval(dispatchInterval)
         startButton.style.backgroundColor = '#9ACD32'
         startButton.textContent = 'START'
     }
