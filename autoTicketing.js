@@ -1,18 +1,22 @@
 let firstFrame = document.getElementById('contentFrame')
 let secondFrame = firstFrame.contentWindow.document.getElementById('mashup_frame')
 let thirdFrame = secondFrame.contentWindow.document.querySelectorAll('iframe')[5].contentWindow.document
+let alarmsContainerArray
 
-a = document.querySelector("#contentFrame").contentWindow.document
-b = a.querySelector('#mashup_frame').contentWindow.document
-c = b.querySelector("#__gwt_historyFrame").contentWindow.document
-c = b.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document
-d = c.querySelector('#table-0_scroll-container')
-if (d === null) {
-    d = loopForAlarmsContainer(c)
+function eventDirectioryRefresh () {
+    a = document.querySelector("#contentFrame").contentWindow.document
+    b = a.querySelector('#mashup_frame').contentWindow.document
+    c = b.querySelector("#__gwt_historyFrame").contentWindow.document
+    c = b.querySelector('#isc_WidgetCanvas_5_widget').firstChild.contentWindow.document
+    d = c.querySelector('#table-0_scroll-container')
+    if (d === null) {
+        d = loopForAlarmsContainer(c)
+    }
+    alarmsContainerArray = d.children
 }
-alarmsContainerArray = d.children
 
 function runAutoticket () {
+    eventDirectioryRefresh()
     for (let i = 0; i < alarmsContainerArray.length; i++) {
         let alarmTextContent = alarmsContainerArray[i].textContent.toLowerCase()
         let text = 'full system backup'
