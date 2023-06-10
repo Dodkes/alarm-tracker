@@ -4,7 +4,7 @@ const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connectio
 //MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
-container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); color: white; z-index: 1; height: 45px; width: 560px; border-radius: 0 0 30px 0; border: 2px solid black;'
+container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 1); color: white; z-index: 1; height: 45px; width: 560px; border-radius: 0 0 30px 0; border: 2px solid black;'
 
 const eventDirectoryRefresh = () => {
     a = document.querySelector("#contentFrame").contentWindow.document
@@ -55,25 +55,36 @@ const createElement = (elementType, text, backColor, elId, appendedTo, func) => 
 //BUTTONS
 createElement('button', 'STOP', 'red', 'stop', container, stopChecking)
 createElement('button', 'START', 'green', 'start', container, startChecking)
+const stopButton = document.getElementById('stop')
+stopButton.style.cssText = 'background-color: #ff3300; color: black; border-radius: 5px; font-weight: bold; outline: none; border: none; margin-left: 2px;'
+const startButton = document.getElementById('start')
+startButton.style.cssText = 'background-color: #00ff80; color: black; border-radius: 5px; font-weight: bold; outline: none; border: none; margin-left: 2px;'
 
 //INPUT
 createElement('input', null, 'transparent', 'interval', container, null)
 const inputInterval = document.getElementById('interval')
-inputInterval.style.cssText = 'border: none; border-bottom: 2px solid black; outline: none; width: 60px; color: lightgreen;'
+inputInterval.style.cssText = 'border: none; border-bottom: 2px solid black; outline: none; width: 60px; color: #ff3300; font-weight: bold; margin-left: 2px;'
 inputInterval.value = 60
 inputInterval.setAttribute('type', 'number')
 //Checkbox <p> element
-createElement('p', 'Sound alert', 'black', null, container, null)
+createElement('p', 'Sound alert', 'black', 'sound-alert', container, null)
+document.getElementById('sound-alert').style.fontWeight = 'bold'
+
 //Checkbox
 createElement('input', null, 'black', 'checkbox', container, null)
 const checkBox = document.getElementById('checkbox')
 checkBox.setAttribute('type', 'checkbox')
 checkBox.checked = true
+document.getElementById('checkbox').style.cssText = 'margin-left: 2px;'
 
 //DISPLAY
 createElement('div', 'READY TO START', '#3399ff', 'display', container, null)
 let display = document.getElementById('display')
 display.style.border = '2px solid black'
+display.style.fontWeight = 'bold'
+display.style.borderRadius = '3px'
+display.style.marginLeft = '2px'
+display.style.padding = '0 5px 0 5px'
 
 const looping = () => {
     eventDirectoryRefresh()
