@@ -4,7 +4,7 @@ const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connectio
 //MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
-container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.8); color: white; z-index: 1; height: 45px; width: 560px; border-radius: 0 0 30px 0; border: 2px solid black;'
+container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.8); box-shadow: 0px 5px 10px black; color: white; z-index: 1; height: 45px; width: 560px; border-radius: 0 0 30px 0; border: none;'
 
 const eventDirectoryRefresh = () => {
     a = document.querySelector("#contentFrame").contentWindow.document
