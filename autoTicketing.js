@@ -19,7 +19,7 @@ function runAutoticket () {
     eventDirectioryRefresh()
     for (let i = 0; i < alarmsContainerArray.length; i++) {
         let alarmTextContent = alarmsContainerArray[i].textContent.toLowerCase()
-        let text = 'full system backup'
+        let text = 'databases missing since last full'
         if (alarmTextContent.includes(text.toLowerCase())) {
             console.log(text)
             createTicket(alarmsContainerArray[i])
@@ -94,6 +94,22 @@ startButton.addEventListener('click', () => {
 
 
 const alarms = ['Filesystems/Disks', 'CPU', 'Backup', 'Service']
+const buttons = []
 alarms.forEach((item)=>{
     elementCreate('button', 'black', '#7FFFD4', item)
+    let button = document.getElementById(item)
+    buttons.push(button)
+    button.addEventListener('click',(event)=>{ addSwitcher(event)})
 })
+
+function addSwitcher (event) {
+    item = event.target
+    console.log(item.style.backgroundColor)
+    switch (item.style.backgroundColor){
+        case 'rgb(127, 255, 212)': item.style.backgroundColor = 'rgb(14, 54, 40)'
+            break
+        case 'rgb(14, 54, 40)': item.style.backgroundColor = 'rgb(127, 255, 212)'
+            break
+        default:
+    }
+}
