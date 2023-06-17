@@ -378,6 +378,14 @@ function buttonBlink (button) {
 eventDirectoryRefresh()
 
 //IGNORE LIST CODE
+let ignoreList
+
+if (!localStorage.getItem('1TOC-ignorelist')) {
+    ignoreList = []
+} else {
+    ignoreList = JSON.parse(localStorage.getItem('1TOC-ignorelist'))
+}
+
 let ignoreListContainer = document.createElement('div')
 container.appendChild(ignoreListContainer)
 ignoreListContainer.style.cssText = 'position: fixed; top:0; right: 0;'
@@ -389,7 +397,7 @@ createElement('input', '', 'transparent', 'inputTitle', ignoreListContainer, nul
 const inputTitle = document.getElementById('inputTitle')
 inputTitle.placeholder = 'Put Title here...'
 
-d.addEventListener('click', (e)=>{
+d.addEventListener('click', (e) => {
     let lengthArray = e.target.innerText.split(' ')
     if (lengthArray.length === 1) {
         inputCI.value = e.target.innerText
@@ -398,10 +406,22 @@ d.addEventListener('click', (e)=>{
     }
 })
 
-createElement('button', 'Add to ignore list', 'lightgreen', 'ignoreAddButton', ignoreListContainer, ()=>{
-    let CI = document.getElementById('inputCI').value
-    let title = document.getElementById('inputTitle').value
-    ignore(CI, title)
+createElement('button', 'Add to ignore list', 'lightgreen', 'ignoreAddButton', ignoreListContainer, () => {
+    if (!confirm('Add to ignore list?')) {
+        return
+    } else {
+        let CI = document.getElementById('inputCI').value
+        let title = document.getElementById('inputTitle').value
+        ignore(CI, title)
+    }
+})
+
+createElement('button', 'Reset ignore list', '#ff3300', 'resetIgnorelistButton', ignoreListContainer, () => {
+    if (!confirm('Reset ignore list?')) {
+        return
+    } else {
+        localStorage.clear('')
+    }
 })
 
 function ignore (ci, title) {
