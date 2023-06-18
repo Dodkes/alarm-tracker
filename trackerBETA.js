@@ -4,7 +4,7 @@ const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connectio
 //MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
-container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.8); box-shadow: 0px 5px 10px black; color: white; z-index: 1; width: 100%; height: 35px; border: none;'
+container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.8); box-shadow: 5px 5px 20px black; color: white; z-index: 1; width: 100%; height: 35px; border: none;'
 
 const eventDirectoryRefresh = () => {
     a = document.querySelector("#contentFrame").contentWindow.document
@@ -397,32 +397,75 @@ createElement('input', '', 'transparent', 'inputTitle', ignoreListContainer, nul
 const inputTitle = document.getElementById('inputTitle')
 inputTitle.placeholder = 'Put Title here...'
 
+const ignoreListInputs = [inputCI, inputTitle]
+ignoreListInputs.forEach(element => {
+  element.style.outline = 'none'
+  element.style.border = '2px solid red'
+  element.style.fontWeight = 'bold'
+  element.style.borderRadius = '5px'
+  element.style.marginRight = '2px'
+  element.oninput = () => {
+    if (element.value == '') {
+        element.style.border = '2px solid red'
+    } else {
+        element.style.border = '2px solid green'
+        if (element !== inputTitle) return
+        else {
+            element.title = element.value
+        }
+    }
+  }
+})
+
 d.addEventListener('click', (e) => {
     let lengthArray = e.target.innerText.split(' ')
     if (lengthArray.length === 1) {
         inputCI.value = e.target.innerText
+        inputCI.style.border = '2px solid green'
     } else {
         inputTitle.value = e.target.innerText
+        inputTitle.title = e.target.innerText
+        inputTitle.style.border = '2px solid green'
     }
 })
 
-createElement('button', 'Add to ignore list', 'lightgreen', 'ignoreAddButton', ignoreListContainer, () => {
-    if (!confirm('Add to ignore list?')) {
-        return
+createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', ignoreListContainer, () => {
+    let CI = document.getElementById('inputCI').value
+    let title = document.getElementById('inputTitle').value
+
+    if (CI == '' || title == '') {
+        alert('Enter CI and Title')
     } else {
-        let CI = document.getElementById('inputCI').value
-        let title = document.getElementById('inputTitle').value
-        ignore(CI, title)
+        if (!confirm('Add alarm to ignore list?')) return
+        else {
+            ignore(CI, title)
+            alert('Alarm added to ignore list')
+        }
     }
+})
+
+createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', ignoreListContainer, () => {
+    alert('To be done :)')
 })
 
 createElement('button', 'Reset ignore list', '#ff3300', 'resetIgnorelistButton', ignoreListContainer, () => {
-    if (!confirm('Reset ignore list?')) {
-        return
-    } else {
+    if (!confirm('Reset ignore list?')) return
+    else {
         localStorage.clear('')
+        alert('Ignore list deleted')
     }
 })
+
+let ignoreListButtons = [document.getElementById('addIgnorelistButton'), document.getElementById('viewIgnorelistButton'), document.getElementById('resetIgnorelistButton')]
+ignoreListButtons.forEach(element => {
+    element.style.color = 'black'
+    element.style.fontWeight = 'bold'
+    element.style.border = 'none'
+    element.style.outline = 'none'
+    element.style.borderRadius = '2px'
+    element.style.margin = '0 2px 0 2px'
+});
+
 
 function ignore (ci, title) {
     for (alarm of alarmsContainerArray) {
