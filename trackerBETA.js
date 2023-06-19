@@ -438,6 +438,8 @@ createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', 
     } else {
         if (!confirm('Add alarm to ignore list?')) return
         else {
+            ignoreList.push({ci: CI, title: title})
+            localStorage.setItem('1TOC-ignorelist', JSON.stringify(ignoreList))
             ignore(CI, title)
             alert('Alarm added to ignore list')
         }
@@ -452,6 +454,7 @@ createElement('button', 'Reset ignore list', '#ff3300', 'resetIgnorelistButton',
     if (!confirm('Reset ignore list?')) return
     else {
         localStorage.clear('')
+        ignoreList = []
         alert('Ignore list deleted')
     }
 })
