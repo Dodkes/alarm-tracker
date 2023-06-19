@@ -438,10 +438,14 @@ createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', 
     } else {
         if (!confirm('Add alarm to ignore list?')) return
         else {
-            ignoreList.push({ci: CI, title: title})
-            localStorage.setItem('1TOC-ignorelist', JSON.stringify(ignoreList))
-            ignore(CI, title)
-            alert('Alarm added to ignore list')
+            for (x of ignoreList) {
+                if (x.ci === CI && x.title === title) return alert('Alarm already present in ignore list')
+
+            }
+                ignoreList.push({ci: CI, title: title})
+                localStorage.setItem('1TOC-ignorelist', JSON.stringify(ignoreList))
+                ignore(CI, title)
+                alert('Alarm added to ignore list')
         }
     }
 })
