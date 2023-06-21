@@ -103,6 +103,13 @@ const looping = () => {
             }
         }
         setButton(content, CI)
+        if (ignoreList.length !== 0 && state.includes('Open')) {
+            ignoreList.forEach(element => {
+                if (CI.innerText.includes(element.ci) && element.title === content) {
+                    alarmsContainerArray[i].style.backgroundColor = 'grey'
+                }
+            })
+        }
     }
 
     if (alarmFound) {
@@ -380,11 +387,7 @@ eventDirectoryRefresh()
 //IGNORE LIST CODE
 let ignoreList
 
-if (!localStorage.getItem('1TOC-ignorelist')) {
-    ignoreList = []
-} else {
-    ignoreList = JSON.parse(localStorage.getItem('1TOC-ignorelist'))
-}
+(!localStorage.getItem('1TOC-ignorelist')) ? ignoreList = [] : ignoreList = JSON.parse(localStorage.getItem('1TOC-ignorelist'))
 
 let ignoreListContainer = document.createElement('div')
 container.appendChild(ignoreListContainer)
@@ -472,7 +475,6 @@ ignoreListButtons.forEach(element => {
     element.style.borderRadius = '2px'
     element.style.margin = '0 2px 0 2px'
 });
-
 
 function ignore (ci, title) {
     for (alarm of alarmsContainerArray) {
