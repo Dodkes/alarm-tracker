@@ -386,8 +386,16 @@ eventDirectoryRefresh()
 
 //IGNORE LIST CODE
 let ignoreList
+let currentDay
 
-(!localStorage.getItem('1TOC-ignorelist')) ? ignoreList = [] : ignoreList = JSON.parse(localStorage.getItem('1TOC-ignorelist'))
+if (!localStorage.getItem('1TOC-ignorelist-currentDay')) {
+    currentDay = new Date().getDate()
+    localStorage.setItem('1TOC-ignorelist-currentDay', JSON.stringify(currentDay))
+} else {
+    currentDay = JSON.parse(localStorage.getItem('1TOC-ignorelist-currentDay'))
+}
+
+(!localStorage.getItem('1TOC-ignorelist') && currentDay !== new Date().getDate()) ? ignoreList = [] : ignoreList = JSON.parse(localStorage.getItem('1TOC-ignorelist'))
 
 let ignoreListContainer = document.createElement('div')
 container.appendChild(ignoreListContainer)
