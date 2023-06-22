@@ -395,7 +395,11 @@ if (!localStorage.getItem('1TOC-ignorelist-currentDay')) {
     currentDay = JSON.parse(localStorage.getItem('1TOC-ignorelist-currentDay'))
 }
 
-(!localStorage.getItem('1TOC-ignorelist') && currentDay !== new Date().getDate()) ? ignoreList = [] : ignoreList = JSON.parse(localStorage.getItem('1TOC-ignorelist'))
+(!localStorage.getItem('1TOC-ignorelist')) ? ignoreList = [] : ignoreList = JSON.parse(localStorage.getItem('1TOC-ignorelist'))
+if (currentDay !== new Date().getDate()) {
+    ignoreList = []
+    localStorage.setItem('1TOC-ignorelist-currentDay', JSON.stringify(new Date().getDate()))
+}
 
 let ignoreListContainer = document.createElement('div')
 container.appendChild(ignoreListContainer)
