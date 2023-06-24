@@ -464,9 +464,28 @@ createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', 
         }
     }
 })
+//View ignore list
+const viewIgnorelistContainer = document.createElement('div')
+
+viewIgnorelistContainer.style.cssText = 'background-color: rgba(0, 0, 0, 0.7); color: white; position: absolute; top: 50%; left: 50%; padding: 30px; transform: translate(-50%, -50%); display: none;' 
+document.body.appendChild(viewIgnorelistContainer)
+
+createElement('button', 'Close', 'darkblue', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
+    viewIgnorelistContainer.style.display = 'none'
+    document.getElementById('resetIgnorelistButton').remove()
+})
 
 createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', ignoreListContainer, () => {
-    alert('To be done :)')
+    let textNode = ''
+    ignoreList.forEach(element => {
+        textNode += element.ci + ' - ' + element.title + '\n'
+    })
+
+    viewIgnorelistContainer.style.display = 'block'
+    viewIgnorelistContainer.innerText = textNode
+    createElement('button', 'Close', 'darkblue', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
+        viewIgnorelistContainer.style.display = 'none'
+    })
 })
 
 createElement('button', 'Reset ignore list', '#ff3300', 'resetIgnorelistButton', ignoreListContainer, () => {
