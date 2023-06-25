@@ -467,7 +467,7 @@ createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', 
 //View ignore list
 const viewIgnorelistContainer = document.createElement('div')
 
-viewIgnorelistContainer.style.cssText = 'background-color: rgba(0, 0, 0, 0.7); color: white; position: absolute; top: 50%; left: 50%; padding: 30px; transform: translate(-50%, -50%); display: none;' 
+viewIgnorelistContainer.style.cssText = 'background-color: rgba(0, 0, 0, 0.7); color: white; position: absolute; top: 50%; left: 50%; padding: 30px; transform: translate(-50%, -50%); display: none; max-height: 80%; overflow: auto;' 
 document.body.appendChild(viewIgnorelistContainer)
 
 createElement('button', 'Close', 'darkblue', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
@@ -478,7 +478,7 @@ createElement('button', 'Close', 'darkblue', 'ignorelistCloseButton', viewIgnore
 createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', ignoreListContainer, () => {
     let textNode = ''
     ignoreList.forEach(element => {
-        textNode += element.ci + ' - ' + element.title + '\n'
+        textNode += element.ci + ' - ' + element.title + '\n' + '\n'
     })
 
     viewIgnorelistContainer.style.display = 'block'
