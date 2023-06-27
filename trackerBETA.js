@@ -467,24 +467,31 @@ createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', 
 //View ignore list
 const viewIgnorelistContainer = document.createElement('div')
 
-viewIgnorelistContainer.style.cssText = 'background-color: rgba(0, 0, 0, 0.7); color: white; position: absolute; top: 50%; left: 50%; padding: 30px; transform: translate(-50%, -50%); display: none; max-height: 80%; overflow: auto;' 
+viewIgnorelistContainer.style.cssText = 'background-color: rgba(0, 0, 0, 0.7); color: white; position: absolute; top: 50%; left: 50%; padding: 30px; transform: translate(-50%, -50%); display: none; max-height: 80%; overflow: auto; border-radius: 5px;' 
 document.body.appendChild(viewIgnorelistContainer)
 
-createElement('button', 'Close', 'darkblue', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
-    viewIgnorelistContainer.style.display = 'none'
-    document.getElementById('resetIgnorelistButton').remove()
-})
-
 createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', ignoreListContainer, () => {
-    let textNode = ''
-    ignoreList.forEach(element => {
-        textNode += element.ci + ' - ' + element.title + '\n' + '\n'
-    })
+    if (ignoreList.length === 0) {
+        viewIgnorelistContainer.innerText = 'Ignore list is empty '
+    } else {
+        ignoreList.forEach(element => {
+
+            let container = document.createElement('div')
+            viewIgnorelistContainer.appendChild(container)
+            container.style.border = '1px solid #cc99ff'
+            container.style.borderRadius = '5px'
+            container.style.marginBottom = '5px'
+            createElement('span', element.ci + ' ', '#cc99ff', element.ci, container, null)
+            createElement('span', element.title, 'transparent', element.title, container, null)
+        })
+    }
 
     viewIgnorelistContainer.style.display = 'block'
-    viewIgnorelistContainer.innerText = textNode
-    createElement('button', 'Close', 'darkblue', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
+    createElement('button', 'Close', 'red', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
         viewIgnorelistContainer.style.display = 'none'
+            while (viewIgnorelistContainer.firstChild) {
+                viewIgnorelistContainer.removeChild(viewIgnorelistContainer.firstChild)
+            }
     })
 })
 
