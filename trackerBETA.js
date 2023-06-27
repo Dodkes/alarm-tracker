@@ -483,6 +483,9 @@ createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', i
             container.style.marginBottom = '5px'
             createElement('span', element.ci + ' ', '#cc99ff', element.ci, container, null)
             createElement('span', element.title, 'transparent', element.title, container, null)
+            createElement('button', 'Remove', '#ff3300', element.ci, container,() => {
+                document.getElementById(element.ci).parentElement.remove()
+            })
         })
     }
 
