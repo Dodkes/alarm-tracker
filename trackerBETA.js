@@ -103,12 +103,19 @@ const looping = () => {
             }
         }
         setButton(content, CI)
+        
         if (ignoreList.length !== 0 && state.includes('Open')) {
             ignoreList.forEach(element => {
-                if (CI.innerText.includes(element.ci) && element.title.includes(content)) {
-                    alarmsContainerArray[i].style.backgroundColor = 'grey'
-                }
+                ignore(element.ci, element.title)
             })
+        }
+
+        function ignore (ci, title) {
+            for (alarm of alarmsContainerArray) {
+                if (alarm.innerText.includes(ci) && alarm.innerText.includes(title)) {
+                    alarm.style.backgroundColor = 'grey'
+                }
+            }
         }
     }
 
@@ -455,7 +462,6 @@ createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', 
         else {
             for (x of ignoreList) {
                 if (x.ci === CI && x.title === title) return alert('Alarm already present in ignore list')
-
             }
                 ignoreList.push({ci: CI, title: title})
                 localStorage.setItem('1TOC-ignorelist', JSON.stringify(ignoreList))
