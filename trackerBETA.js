@@ -105,7 +105,7 @@ const looping = () => {
         setButton(content, CI)
         if (ignoreList.length !== 0 && state.includes('Open')) {
             ignoreList.forEach(element => {
-                if (CI.innerText.includes(element.ci) && element.title === content) {
+                if (CI.innerText.includes(element.ci) && element.title.includes(content)) {
                     alarmsContainerArray[i].style.backgroundColor = 'grey'
                 }
             })
@@ -478,19 +478,24 @@ createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', i
 
             let container = document.createElement('div')
             viewIgnorelistContainer.appendChild(container)
-            container.style.border = '1px solid #cc99ff'
-            container.style.borderRadius = '5px'
-            container.style.marginBottom = '5px'
-            createElement('span', element.ci + ' ', '#cc99ff', element.ci, container, null)
+            container.style.cssText = 'border: 1px solid #87CEFA; border-radius: 5px; margin-bottom: 5px; padding: 5px;'
+            createElement('span',' ' + element.ci + ' ', 'transparent', element.ci, container, null)
+            document.getElementById(element.ci).style.cssText = 'font-weight: bold; color: #87CEFA;'
             createElement('span', element.title, 'transparent', element.title, container, null)
-            createElement('button', 'Remove', '#ff3300', element.ci, container,() => {
+            createElement('button', 'Remove', '#007acc', element.ci, container,(e) => {
                 document.getElementById(element.ci).parentElement.remove()
+                ignoreList.forEach((element, index) => {
+                    if (e.target.id === element.ci && e.target.previousSibling.innerText === element.title) {
+                        ignoreList.splice(index, 1)
+                        localStorage.setItem('1TOC-ignorelist', JSON.stringify(ignoreList))
+                    }
+                })
             })
         })
     }
 
     viewIgnorelistContainer.style.display = 'block'
-    createElement('button', 'Close', 'red', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
+    createElement('button', 'Close', '#666699', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
         viewIgnorelistContainer.style.display = 'none'
             while (viewIgnorelistContainer.firstChild) {
                 viewIgnorelistContainer.removeChild(viewIgnorelistContainer.firstChild)
