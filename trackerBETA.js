@@ -1,5 +1,7 @@
 let check, soundBeep, alarmsContainerArray, date, hour, minute, sec, a, b, c, d, titleIndex, ciIndex, stateIndex
 let alarmFound = false
+let [criticalColor, majorColor, minorColor] = ['#ed4c81', '#f4ac74', '#f8e860']
+
 const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired', 'SDWAN API']
 //MAIN CONTAINER
 const container = document.createElement('div')
@@ -103,19 +105,11 @@ const looping = () => {
             }
         }
         setButton(content, CI)
-        
+
         if (ignoreList.length !== 0 && state.includes('Open')) {
             ignoreList.forEach(element => {
                 ignore(element.ci, element.title)
             })
-        }
-
-        function ignore (ci, title) {
-            for (alarm of alarmsContainerArray) {
-                if (alarm.innerText.includes(ci) && alarm.innerText.includes(title)) {
-                    alarm.style.backgroundColor = 'grey'
-                }
-            }
         }
     }
 
@@ -514,9 +508,26 @@ createElement('button', 'Reset ignore list', '#ff3300', 'resetIgnorelistButton',
     else {
         localStorage.clear('')
         ignoreList = []
+        resetAlarmsColors ()
         alert('Ignore list deleted')
     }
 })
+
+function resetAlarmsColors () {
+    for (alarm of alarmsContainerArray) {
+        if (alarm.style.backgroundColor == 'grey') {
+            let alarmClassNameToUpperCase = alarm.className.toUpperCase()
+
+            if (alarmClassNameToUpperCase.includes('CRITICAL')) {
+                alarm.style.backgroundColor = criticalColor
+            } else if (alarmClassNameToUpperCase.includes('MAJOR')) {
+                alarm.style.backgroundColor = majorColor
+            } else if (alarmClassNameToUpperCase.includes('MINOR')) {
+                alarm.style.backgroundColor = minorColor
+            }
+        }
+    }
+}
 
 let ignoreListButtons = [document.getElementById('addIgnorelistButton'), document.getElementById('viewIgnorelistButton'), document.getElementById('resetIgnorelistButton')]
 ignoreListButtons.forEach(element => {
@@ -526,7 +537,7 @@ ignoreListButtons.forEach(element => {
     element.style.outline = 'none'
     element.style.borderRadius = '2px'
     element.style.margin = '0 2px 0 2px'
-});
+})
 
 function ignore (ci, title) {
     for (alarm of alarmsContainerArray) {
@@ -535,3 +546,5 @@ function ignore (ci, title) {
         }
     }
 }
+
+//CRITICAL = #ed4c81
