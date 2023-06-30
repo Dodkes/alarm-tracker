@@ -488,8 +488,28 @@ createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', i
                     if (e.target.id === element.ci && e.target.previousSibling.innerText === element.title) {
                         ignoreList.splice(index, 1)
                         localStorage.setItem('1TOC-ignorelist', JSON.stringify(ignoreList))
+
+                        for (alarm of alarmsContainerArray) {
+                            if (alarm.innerText.includes(element.ci) && alarm.innerText.includes(element.title)) {
+                                let upperCaseAlarm = alarm.className.toUpperCase()
+
+                                if (upperCaseAlarm.includes('CRITICAL')) {
+                                    alarm.style.backgroundColor = criticalColor
+                                }
+                                else if (upperCaseAlarm.includes('MAJOR')) {
+                                    alarm.style.backgroundColor = majorColor
+                                }
+                                else if (upperCaseAlarm.includes('MINOR')) {
+                                    alarm.style.backgroundColor = minorColor
+                                }
+                            }
+                        }
                     }
                 })
+                if (ignoreList.length === 0) {
+                    viewIgnorelistContainer.style.display = 'none'
+                }
+
             })
         })
     }
