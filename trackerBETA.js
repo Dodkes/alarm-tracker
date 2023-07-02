@@ -471,6 +471,7 @@ viewIgnorelistContainer.style.cssText = 'background-color: rgba(0, 0, 0, 0.7); c
 document.body.appendChild(viewIgnorelistContainer)
 
 createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', ignoreListContainer, () => {
+    document.getElementById('viewIgnorelistButton').disabled = true
     if (ignoreList.length === 0) {
         viewIgnorelistContainer.innerText = 'Ignore list is empty '
     } else {
@@ -516,6 +517,7 @@ createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', i
 
     viewIgnorelistContainer.style.display = 'block'
     createElement('button', 'Close', '#666699', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
+        document.getElementById('viewIgnorelistButton').disabled = false
         viewIgnorelistContainer.style.display = 'none'
             while (viewIgnorelistContainer.firstChild) {
                 viewIgnorelistContainer.removeChild(viewIgnorelistContainer.firstChild)
@@ -566,5 +568,3 @@ function ignore (ci, title) {
         }
     }
 }
-
-//CRITICAL = #ed4c81
