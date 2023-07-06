@@ -1,11 +1,7 @@
 let check, soundBeep, alarmsContainerArray, date, hour, minute, sec, a, b, c, d, titleIndex, ciIndex, stateIndex
 let alarmFound = false
 let [criticalColor, majorColor, minorColor] = ['#ed4c81', '#f4ac74', '#f8e860']
-const displayBarColorOn = 'rgba(51, 204, 51, 0.7)'
-const displayBarColorOff = 'rgba(51, 204, 255, 0.7)'
-const displayBarColorCritical = 'rgba(255, 80, 80, 0.7)'
-
-
+const [displayBarColorOn, displayBarColorOff, displayBarColorCritical] = ['rgba(51, 204, 51, 0.7)', 'rgba(51, 204, 255, 0.7)', 'rgba(255, 80, 80, 0.7)']
 
 const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired', 'SDWAN API']
 //MAIN CONTAINER
@@ -97,7 +93,15 @@ startButton.style.backgroundColor = '#00ff80'
 //INPUT
 createElement('input', null, 'transparent', 'interval', container, null)
 const inputInterval = document.getElementById('interval')
-inputInterval.style.cssText = 'border: none; border-bottom: 2px solid black; outline: none; width: 60px; color: #ff3300; font-weight: bold; margin-left: 2px;'
+inputInterval.style.cssText = `
+                                border: none; 
+                                border-bottom: 2px solid black; 
+                                outline: none; 
+                                width: 60px; 
+                                color: #ff3300; 
+                                font-weight: bold; 
+                                margin-left: 2px;
+                            `
 inputInterval.value = 60
 inputInterval.setAttribute('type', 'number')
 //Checkbox <p> element
@@ -426,7 +430,7 @@ eventDirectoryRefresh()
 let ignoreList
 let currentDay
 
-if (!localStorage.getItem('1TOC-ignorelist-currentDay')) {
+if (!Number(localStorage.getItem('1TOC-ignorelist-currentDay'))) {
     currentDay = new Date().getDate()
     localStorage.setItem('1TOC-ignorelist-currentDay', JSON.stringify(currentDay))
 } else {
@@ -437,11 +441,16 @@ if (!localStorage.getItem('1TOC-ignorelist-currentDay')) {
 if (currentDay !== new Date().getDate()) {
     ignoreList = []
     localStorage.setItem('1TOC-ignorelist-currentDay', JSON.stringify(new Date().getDate()))
+    localStorage.removeItem('1TOC-ignorelist')
 }
 
 let ignoreListContainer = document.createElement('div')
 container.appendChild(ignoreListContainer)
-ignoreListContainer.style.cssText = 'position: fixed; top:0; right: 0;'
+ignoreListContainer.style.cssText = `
+                                    position: fixed; 
+                                    top:0; 
+                                    right: 0;
+                                    `
 
 createElement('input', '', 'transparent', 'inputCI', ignoreListContainer, null)
 const inputCI = document.getElementById('inputCI')
@@ -516,7 +525,7 @@ viewIgnorelistContainer.style.cssText = `
                                         max-height: 80%; 
                                         overflow: auto; 
                                         border-radius: 5px;
-                                        border: 2px solid black;
+                                        border: 2px solid ${displayBarColorOff};
                                         `
 
 document.body.appendChild(viewIgnorelistContainer)
@@ -530,9 +539,17 @@ createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', i
 
             let container = document.createElement('div')
             viewIgnorelistContainer.appendChild(container)
-            container.style.cssText = 'border: 1px solid #87CEFA; border-radius: 5px; margin-bottom: 5px; padding: 5px;'
+            container.style.cssText = `
+                                        border: 1px solid #87CEFA; 
+                                        border-radius: 5px; 
+                                        margin-bottom: 5px; 
+                                        padding: 5px;
+                                        `
             createElement('span',' ' + element.ci + ' ', 'transparent', element.ci, container, null)
-            document.getElementById(element.ci).style.cssText = 'font-weight: bold; color: #87CEFA;'
+            document.getElementById(element.ci).style.cssText = `
+                                                                font-weight: bold; 
+                                                                color: #87CEFA;
+                                                                `
             createElement('span', element.title, 'transparent', element.title, container, null)
             createElement('button', 'Remove', '#007acc', element.ci, container,(e) => {
                 document.getElementById(element.ci).parentElement.remove()
@@ -560,6 +577,7 @@ createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', i
                 })
                 if (ignoreList.length === 0) {
                     viewIgnorelistContainer.style.display = 'none'
+                    document.getElementById('viewIgnorelistButton').disabled = false
                 }
 
             })
