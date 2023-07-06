@@ -1,12 +1,27 @@
 let check, soundBeep, alarmsContainerArray, date, hour, minute, sec, a, b, c, d, titleIndex, ciIndex, stateIndex
 let alarmFound = false
 let [criticalColor, majorColor, minorColor] = ['#ed4c81', '#f4ac74', '#f8e860']
+const displayBarColorOn = 'rgba(51, 204, 51, 0.7)'
+const displayBarColorOff = 'rgba(51, 204, 255, 0.7)'
+const displayBarColorCritical = 'rgba(255, 80, 80, 0.7)'
+
+
 
 const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired', 'SDWAN API']
 //MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
-container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.8); box-shadow: 5px 5px 20px black; color: white; z-index: 1; width: 100%; height: 35px; border: none;'
+container.style.cssText = `
+                            position: fixed; 
+                            top: 0; left: 0; 
+                            background-color: rgba(0, 0, 0, 0.8); 
+                            box-shadow: 5px 5px 20px black; 
+                            color: white; 
+                            z-index: 1; 
+                            width: 100%; 
+                            height: 35px; 
+                            border: none;
+                            `
 
 const eventDirectoryRefresh = () => {
     a = document.querySelector("#contentFrame").contentWindow.document
@@ -32,7 +47,6 @@ function loopForAlarmsContainer (c) {
 }
 
 const startChecking = () => {
-    display.style.backgroundColor = '#3399ff'
     clearInterval(check)
     clearInterval(soundBeep)
     check = setInterval(looping, Number(inputInterval.value) * 1000)
@@ -43,7 +57,7 @@ const stopChecking = () => {
     clearInterval(check)
     clearInterval(soundBeep)
     display.textContent = 'READY TO START'
-    display.style.backgroundColor = '#3399ff'
+    display.style.backgroundColor = displayBarColorOff
 }
 
 const createElement = (elementType, text, backColor, elId, appendedTo, func) => {
@@ -51,16 +65,34 @@ const createElement = (elementType, text, backColor, elId, appendedTo, func) => 
     newElement.textContent = text
     appendedTo.appendChild(newElement)
     newElement.id = elId
-    newElement.style.cssText = `background-color: ${backColor}; color: white; display: inline-block; z-index: 1; height: auto; box-sizing: border-box;`
+    newElement.style.cssText = `
+                                background-color: ${backColor}; 
+                                color: white; 
+                                display: inline-block; 
+                                z-index: 1; 
+                                height: auto; 
+                                box-sizing: border-box;`
+                                
     newElement.addEventListener('click', func)
 }
-//BUTTONS
+//STOP START BUTTONS
 createElement('button', 'STOP', 'red', 'stop', container, stopChecking)
 createElement('button', 'START', 'green', 'start', container, startChecking)
 const stopButton = document.getElementById('stop')
-stopButton.style.cssText = 'background-color: #ff3300; color: black; border-radius: 5px; font-weight: bold; outline: none; border: none; margin-left: 2px;'
+const handlingButtonsStyle = `
+                            background-color: #ff3300; 
+                            color: black; 
+                            border-radius: 5px; 
+                            font-weight: bold; 
+                            outline: none; 
+                            border: none; 
+                            margin-left: 2px;
+                            `
+
+stopButton.style.cssText = handlingButtonsStyle
 const startButton = document.getElementById('start')
-startButton.style.cssText = 'background-color: #00ff80; color: black; border-radius: 5px; font-weight: bold; outline: none; border: none; margin-left: 2px;'
+startButton.style.cssText = handlingButtonsStyle
+startButton.style.backgroundColor = '#00ff80'
 
 //INPUT
 createElement('input', null, 'transparent', 'interval', container, null)
@@ -80,17 +112,22 @@ checkBox.checked = true
 document.getElementById('checkbox').style.cssText = 'margin-left: 2px;'
 
 //DISPLAY
-createElement('div', 'READY TO START', '#3399ff', 'display', container, null)
-let display = document.getElementById('display')
-display.style.border = '2px solid black'
-display.style.fontWeight = 'bold'
-display.style.borderRadius = '3px'
-display.style.marginLeft = '2px'
-display.style.padding = '0 5px 0 5px'
-
+createElement('div', 'READY TO START', 'none', 'display', container, null)
+const display = document.getElementById('display')
+display.style.cssText = `
+                        font-weight: bold; 
+                        border-radius: 3px;
+                        margin-left: 2px; 
+                        padding: 0 5px 0 5px;
+                        text-align: center;
+                        border-bottom: 1px solid black;
+                        background-color: ${displayBarColorOff};
+                        `
 const looping = () => {
     eventDirectoryRefresh()
     display.textContent = checkTime()
+    display.style.backgroundColor = displayBarColorOn
+
 
     for (let i = 0; i < alarmsContainerArray.length; i++) {
         let content = alarmsContainerArray[i].childNodes[titleIndex].innerText
@@ -136,7 +173,7 @@ function checkTime () {
 }
 
 function foundAlarms (alarm) {
-    display.style.backgroundColor = '#ff3399'
+    display.style.backgroundColor = displayBarColorCritical
     display.textContent = alarm
 }
 
@@ -467,7 +504,21 @@ createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', 
 //View ignore list
 const viewIgnorelistContainer = document.createElement('div')
 
-viewIgnorelistContainer.style.cssText = 'background-color: rgba(0, 0, 0, 0.7); color: white; position: absolute; top: 50%; left: 50%; padding: 30px; transform: translate(-50%, -50%); display: none; max-height: 80%; overflow: auto; border-radius: 5px;' 
+viewIgnorelistContainer.style.cssText = `
+                                        background-color: rgba(0, 0, 0, 0.7); 
+                                        color: white; 
+                                        position: absolute; 
+                                        top: 50%; 
+                                        left: 50%; 
+                                        padding: 30px; 
+                                        transform: translate(-50%, -50%); 
+                                        display: none; 
+                                        max-height: 80%; 
+                                        overflow: auto; 
+                                        border-radius: 5px;
+                                        border: 2px solid black;
+                                        `
+
 document.body.appendChild(viewIgnorelistContainer)
 
 createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', ignoreListContainer, () => {
