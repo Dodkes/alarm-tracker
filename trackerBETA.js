@@ -52,7 +52,7 @@ const startChecking = () => {
 const stopChecking = () => {
     clearInterval(check)
     clearInterval(soundBeep)
-    display.textContent = 'READY TO START'
+    display.textContent = `READY TO START`
     display.style.backgroundColor = displayBarColorOff
 }
 
@@ -173,12 +173,13 @@ function checkTime () {
     hour = date.getHours()
     minute = date.getMinutes()
     sec = date.getSeconds()
-    return 'Alarm check performed: ' + hour + 'h : ' + minute + 'm : ' + sec + 's'
+    // return 'RUNNING: Last check - ' + hour + 'h : ' + minute + 'm : ' + sec + 's'
+    return `RUNNING: Last check - ${hour} h : ${minute} m : ${sec} s`
 }
 
 function foundAlarms (alarm) {
     display.style.backgroundColor = displayBarColorCritical
-    display.textContent = alarm
+    display.textContent = `STOPPED: ${alarm}`
 }
 
 function getCell (endedID) {
