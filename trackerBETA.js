@@ -455,10 +455,10 @@ ignoreListContainer.style.cssText = `
 
 createElement('input', '', 'transparent', 'inputCI', ignoreListContainer, null)
 const inputCI = document.getElementById('inputCI')
-inputCI.placeholder = 'Put CI here...'
+inputCI.placeholder = 'CI input'
 createElement('input', '', 'transparent', 'inputTitle', ignoreListContainer, null)
 const inputTitle = document.getElementById('inputTitle')
-inputTitle.placeholder = 'Put Title here...'
+inputTitle.placeholder = 'Title input'
 
 const ignoreListInputs = [inputCI, inputTitle]
 ignoreListInputs.forEach(element => {
