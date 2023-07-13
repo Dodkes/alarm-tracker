@@ -453,12 +453,17 @@ ignoreListContainer.style.cssText = `
                                     right: 0;
                                     `
 
-createElement('input', '', 'transparent', 'inputCI', ignoreListContainer, null)
+createElement('input', '', 'transparent', 'inputCI', ignoreListContainer, () => copyCI('inputCI'))
 const inputCI = document.getElementById('inputCI')
 inputCI.placeholder = 'CI input'
-createElement('input', '', 'transparent', 'inputTitle', ignoreListContainer, null)
+createElement('input', '', 'transparent', 'inputTitle', ignoreListContainer, () => copyCI('inputTitle'))
 const inputTitle = document.getElementById('inputTitle')
 inputTitle.placeholder = 'Title input'
+
+function copyCI (elementID) {
+    let inputValue = document.getElementById(elementID).value
+    navigator.clipboard.writeText(inputValue)
+}
 
 const ignoreListInputs = [inputCI, inputTitle]
 ignoreListInputs.forEach(element => {
@@ -467,6 +472,7 @@ ignoreListInputs.forEach(element => {
   element.style.fontWeight = 'bold'
   element.style.borderRadius = '5px'
   element.style.marginRight = '2px'
+  element.style.cursor = 'pointer'
   element.oninput = () => {
     if (element.value == '') {
         element.style.border = '2px solid red'
