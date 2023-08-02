@@ -2,6 +2,11 @@ let check, soundBeep, alarmsContainerArray, date, hour, minute, sec, a, b, c, d,
 let alarmFound = false
 let [criticalColor, majorColor, minorColor] = ['#ed4c81', '#f4ac74', '#f8e860']
 const [displayBarColorOn, displayBarColorOff, displayBarColorCritical] = ['rgba(51, 204, 51, 0.7)', 'rgba(51, 204, 255, 0.7)', 'rgba(255, 80, 80, 0.7)']
+//////////////////////////////////////////////////////////////JQUERY/////////////////////////////////////////////////////////////////
+var script = document.createElement('script');
+script.src = 'https://code.jquery.com/jquery-3.6.3.min.js'; // Check https://jquery.com/ for the current version
+document.getElementsByTagName('head')[0].appendChild(script);
+//////////////////////////////////////////////////////////////JQUERY/////////////////////////////////////////////////////////////////
 
 const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired', 'SDWAN API']
 //MAIN CONTAINER
@@ -643,4 +648,30 @@ function ignore (ci, title) {
             alarm.style.backgroundColor = 'grey'
         }
     }
+}
+
+/////////////////////////////////////////////////////JQUERY VISUALISATIONS & ANIMATIONS////////////////////////////////////////////
+
+hoverButtons ('#start', 'black', '#00ff80')
+hoverButtons ('#stop', 'black', '#ff3300')
+
+hoverButtons ('#viewIgnorelistButton', 'black', '#87CEFA')
+hoverButtons ('#addIgnorelistButton', 'black', '#00ff80')
+hoverButtons ('#resetIgnorelistButton', 'black', '#ff3300')
+
+
+function hoverButtons (buttonId, color, backgroundColor) {
+    $(buttonId).hover( function (){
+        $(buttonId).css({
+            'background-color' : color,
+            'color' : backgroundColor,
+        })
+    },
+        function () {
+            $(buttonId).css({
+                'background-color' : backgroundColor,
+                'color' : color,
+            })
+        }
+    )
 }
