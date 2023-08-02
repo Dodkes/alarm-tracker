@@ -1,10 +1,28 @@
 let check, soundBeep, alarmsContainerArray, date, hour, minute, sec, a, b, c, d, titleIndex, ciIndex, stateIndex
 let alarmFound = false
+let [criticalColor, majorColor, minorColor] = ['#ed4c81', '#f4ac74', '#f8e860']
+const [displayBarColorOn, displayBarColorOff, displayBarColorCritical] = ['rgba(51, 204, 51, 0.7)', 'rgba(51, 204, 255, 0.7)', 'rgba(255, 80, 80, 0.7)']
+//////////////////////////////////////////////////////////////JQUERY/////////////////////////////////////////////////////////////////
+var script = document.createElement('script');
+script.src = 'https://code.jquery.com/jquery-3.6.3.min.js'; // Check https://jquery.com/ for the current version
+document.getElementsByTagName('head')[0].appendChild(script);
+//////////////////////////////////////////////////////////////JQUERY/////////////////////////////////////////////////////////////////
+
 const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired', 'SDWAN API']
 //MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
-container.style.cssText = 'position: fixed; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.8); box-shadow: 0px 5px 10px black; color: white; z-index: 1; height: 45px; width: 560px; border-radius: 0 0 30px 0; border: none;'
+container.style.cssText = `
+                            position: fixed; 
+                            top: 0; left: 0; 
+                            background-color: rgba(0, 0, 0, 0.8); 
+                            box-shadow: 5px 5px 20px black; 
+                            color: white; 
+                            z-index: 1; 
+                            width: 100%; 
+                            height: 35px; 
+                            border: none;
+                            `
 
 const eventDirectoryRefresh = () => {
     a = document.querySelector("#contentFrame").contentWindow.document
@@ -30,7 +48,6 @@ function loopForAlarmsContainer (c) {
 }
 
 const startChecking = () => {
-    display.style.backgroundColor = '#3399ff'
     clearInterval(check)
     clearInterval(soundBeep)
     check = setInterval(looping, Number(inputInterval.value) * 1000)
@@ -40,8 +57,8 @@ const startChecking = () => {
 const stopChecking = () => {
     clearInterval(check)
     clearInterval(soundBeep)
-    display.textContent = 'READY TO START'
-    display.style.backgroundColor = '#3399ff'
+    display.textContent = `READY TO START`
+    display.style.backgroundColor = displayBarColorOff
 }
 
 const createElement = (elementType, text, backColor, elId, appendedTo, func) => {
@@ -49,21 +66,47 @@ const createElement = (elementType, text, backColor, elId, appendedTo, func) => 
     newElement.textContent = text
     appendedTo.appendChild(newElement)
     newElement.id = elId
-    newElement.style.cssText = `background-color: ${backColor}; color: white; display: inline-block; z-index: 1; height: auto; box-sizing: border-box;`
+    newElement.style.cssText = `
+                                background-color: ${backColor}; 
+                                color: white; 
+                                display: inline-block; 
+                                z-index: 1; 
+                                height: auto; 
+                                box-sizing: border-box;`
+                                
     newElement.addEventListener('click', func)
 }
-//BUTTONS
+//STOP START BUTTONS
 createElement('button', 'STOP', 'red', 'stop', container, stopChecking)
 createElement('button', 'START', 'green', 'start', container, startChecking)
 const stopButton = document.getElementById('stop')
-stopButton.style.cssText = 'background-color: #ff3300; color: black; border-radius: 5px; font-weight: bold; outline: none; border: none; margin-left: 2px;'
+const handlingButtonsStyle = `
+                            background-color: #ff3300; 
+                            color: black; 
+                            border-radius: 5px; 
+                            font-weight: bold; 
+                            outline: none; 
+                            border: none; 
+                            margin-left: 2px;
+                            `
+
+stopButton.style.cssText = handlingButtonsStyle
 const startButton = document.getElementById('start')
-startButton.style.cssText = 'background-color: #00ff80; color: black; border-radius: 5px; font-weight: bold; outline: none; border: none; margin-left: 2px;'
+startButton.style.cssText = handlingButtonsStyle
+startButton.style.backgroundColor = '#00ff80'
 
 //INPUT
 createElement('input', null, 'transparent', 'interval', container, null)
 const inputInterval = document.getElementById('interval')
-inputInterval.style.cssText = 'border: none; border-bottom: 2px solid black; outline: none; width: 60px; color: #ff3300; font-weight: bold; margin-left: 2px;'
+inputInterval.style.cssText = `
+                                border: none; 
+                                border-bottom: 2px solid black; 
+                                outline: none; 
+                                width: 60px; 
+                                color: #ff3300; 
+                                font-weight: bold; 
+                                margin-left: 2px;
+                            `
 inputInterval.value = 60
 inputInterval.setAttribute('type', 'number')
 //Checkbox <p> element
@@ -78,17 +121,22 @@ checkBox.checked = true
 document.getElementById('checkbox').style.cssText = 'margin-left: 2px;'
 
 //DISPLAY
-createElement('div', 'READY TO START', '#3399ff', 'display', container, null)
-let display = document.getElementById('display')
-display.style.border = '2px solid black'
-display.style.fontWeight = 'bold'
-display.style.borderRadius = '3px'
-display.style.marginLeft = '2px'
-display.style.padding = '0 5px 0 5px'
-
+createElement('div', 'READY TO START', 'none', 'display', container, null)
+const display = document.getElementById('display')
+display.style.cssText = `
+                        font-weight: bold; 
+                        border-radius: 3px;
+                        margin-left: 2px; 
+                        padding: 0 5px 0 5px;
+                        text-align: center;
+                        border-bottom: 1px solid black;
+                        background-color: ${displayBarColorOff};
+                        `
 const looping = () => {
     eventDirectoryRefresh()
     display.textContent = checkTime()
+    display.style.backgroundColor = displayBarColorOn
+
 
     for (let i = 0; i < alarmsContainerArray.length; i++) {
         let content = alarmsContainerArray[i].childNodes[titleIndex].innerText
@@ -103,6 +151,12 @@ const looping = () => {
             }
         }
         setButton(content, CI)
+
+        if (ignoreList.length !== 0 && state.includes('Open')) {
+            ignoreList.forEach(element => {
+                ignore(element.ci, element.title)
+            })
+        }
     }
 
     if (alarmFound) {
@@ -124,12 +178,13 @@ function checkTime () {
     hour = date.getHours()
     minute = date.getMinutes()
     sec = date.getSeconds()
-    return 'Alarm check performed: ' + hour + 'h : ' + minute + 'm : ' + sec + 's'
+    // return 'RUNNING: Last check - ' + hour + 'h : ' + minute + 'm : ' + sec + 's'
+    return `RUNNING: Last check - ${hour} h : ${minute} m : ${sec} s`
 }
 
 function foundAlarms (alarm) {
-    display.style.backgroundColor = '#ff3399'
-    display.textContent = alarm
+    display.style.backgroundColor = displayBarColorCritical
+    display.textContent = `STOPPED: ${alarm}`
 }
 
 function getCell (endedID) {
@@ -365,6 +420,13 @@ function setButton (baseTitle, CI) {
                 buttonBlink(event.target)
             })
         }
+
+        else if (title.includes('cluster consistency check: error')) {
+            createElement('button', 'CCC check', 'black', commandCI, CI, (event) => {
+                navigator.clipboard.writeText(`urp_remote_run ${commandCI} ccc`)
+                buttonBlink(event.target)
+            })
+        }
     }
 }
 
@@ -373,4 +435,254 @@ function buttonBlink (button) {
     setTimeout(() => {
     button.style.backgroundColor = 'black'
     }, 1000);
+}
+
+eventDirectoryRefresh()
+
+//IGNORE LIST CODE
+let ignoreList
+let currentDay
+
+if (!Number(localStorage.getItem('1TOC-ignorelist-currentDay'))) {
+    currentDay = new Date().getDate()
+    localStorage.setItem('1TOC-ignorelist-currentDay', JSON.stringify(currentDay))
+} else {
+    currentDay = JSON.parse(localStorage.getItem('1TOC-ignorelist-currentDay'))
+}
+
+(!localStorage.getItem('1TOC-ignorelist')) ? ignoreList = [] : ignoreList = JSON.parse(localStorage.getItem('1TOC-ignorelist'))
+if (currentDay !== new Date().getDate()) {
+    ignoreList = []
+    localStorage.setItem('1TOC-ignorelist-currentDay', JSON.stringify(new Date().getDate()))
+    localStorage.removeItem('1TOC-ignorelist')
+}
+
+let ignoreListContainer = document.createElement('div')
+container.appendChild(ignoreListContainer)
+ignoreListContainer.style.cssText = `
+                                    position: fixed; 
+                                    top:0; 
+                                    right: 0;
+                                    `
+
+createElement('input', '', 'transparent', 'inputCI', ignoreListContainer, () => copyCI('inputCI'))
+const inputCI = document.getElementById('inputCI')
+inputCI.placeholder = 'CI input'
+createElement('input', '', 'transparent', 'inputTitle', ignoreListContainer, () => copyCI('inputTitle'))
+const inputTitle = document.getElementById('inputTitle')
+inputTitle.placeholder = 'Title input'
+
+function copyCI (elementID) {
+    let inputValue = document.getElementById(elementID).value
+    navigator.clipboard.writeText(inputValue)
+}
+
+const ignoreListInputs = [inputCI, inputTitle]
+ignoreListInputs.forEach(element => {
+  element.style.outline = 'none'
+  element.style.border = '2px solid red'
+  element.style.fontWeight = 'bold'
+  element.style.borderRadius = '5px'
+  element.style.marginRight = '2px'
+  element.style.cursor = 'pointer'
+  element.oninput = () => {
+    if (element.value == '') {
+        element.style.border = '2px solid red'
+    } else {
+        element.style.border = '2px solid green'
+        if (element !== inputTitle) return
+        else {
+            element.title = element.value
+        }
+    }
+  }
+})
+
+d.addEventListener('click', (e) => {
+    let lengthArray = e.target.innerText.split(' ')
+    if (lengthArray.length === 1) {
+        inputCI.value = e.target.innerText
+        inputCI.style.border = '2px solid green'
+    } else {
+        inputTitle.value = e.target.innerText
+        inputTitle.title = e.target.innerText
+        inputTitle.style.border = '2px solid green'
+    }
+})
+
+createElement('button', 'Add to ignore list', '#00ff80', 'addIgnorelistButton', ignoreListContainer, () => {
+    let CI = document.getElementById('inputCI').value
+    let title = document.getElementById('inputTitle').value
+
+    if (CI == '' || title == '') {
+        alert('Enter CI and Title')
+    } else {
+        if (!confirm('Add alarm to ignore list?')) return
+        else {
+            for (x of ignoreList) {
+                if (x.ci === CI && x.title === title) return alert('Alarm already present in ignore list')
+            }
+                ignoreList.push({ci: CI, title: title})
+                localStorage.setItem('1TOC-ignorelist', JSON.stringify(ignoreList))
+                ignore(CI, title)
+                alert('Alarm added to ignore list')
+        }
+    }
+})
+//View ignore list
+const viewIgnorelistContainer = document.createElement('div')
+
+viewIgnorelistContainer.style.cssText = `
+                                        background-color: rgba(0, 0, 0, 0.7); 
+                                        color: white; 
+                                        position: absolute; 
+                                        top: 50%; 
+                                        left: 50%; 
+                                        padding: 30px; 
+                                        transform: translate(-50%, -50%); 
+                                        display: none; 
+                                        max-height: 80%; 
+                                        overflow: auto; 
+                                        border-radius: 5px;
+                                        border: 2px solid ${displayBarColorOff};
+                                        `
+
+document.body.appendChild(viewIgnorelistContainer)
+
+createElement('button', 'View ignore list', '#87CEFA', 'viewIgnorelistButton', ignoreListContainer, () => {
+    document.getElementById('viewIgnorelistButton').disabled = true
+    if (ignoreList.length === 0) {
+        viewIgnorelistContainer.innerText = 'Ignore list is empty '
+    } else {
+        ignoreList.forEach(element => {
+
+            let container = document.createElement('div')
+            viewIgnorelistContainer.appendChild(container)
+            container.style.cssText = `
+                                        border: 1px solid #87CEFA; 
+                                        border-radius: 5px; 
+                                        margin-bottom: 5px; 
+                                        padding: 5px;
+                                        `
+            createElement('span',' ' + element.ci + ' ', 'transparent', element.ci, container, null)
+            document.getElementById(element.ci).style.cssText = `
+                                                                font-weight: bold; 
+                                                                color: #87CEFA;
+                                                                `
+            createElement('span', element.title, 'transparent', element.title, container, null)
+            createElement('button', 'Remove', '#007acc', element.ci, container,(e) => {
+                document.getElementById(element.ci).parentElement.remove()
+                ignoreList.forEach((element, index) => {
+                    if (e.target.id === element.ci && e.target.previousSibling.innerText === element.title) {
+                        ignoreList.splice(index, 1)
+                        localStorage.setItem('1TOC-ignorelist', JSON.stringify(ignoreList))
+
+                        for (alarm of alarmsContainerArray) {
+                            if (alarm.innerText.includes(element.ci) && alarm.innerText.includes(element.title)) {
+                                let upperCaseAlarm = alarm.className.toUpperCase()
+
+                                if (upperCaseAlarm.includes('CRITICAL')) {
+                                    alarm.style.backgroundColor = criticalColor
+                                }
+                                else if (upperCaseAlarm.includes('MAJOR')) {
+                                    alarm.style.backgroundColor = majorColor
+                                }
+                                else if (upperCaseAlarm.includes('MINOR')) {
+                                    alarm.style.backgroundColor = minorColor
+                                }
+                            }
+                        }
+                    }
+                })
+                if (ignoreList.length === 0) {
+                    viewIgnorelistContainer.style.display = 'none'
+                    document.getElementById('viewIgnorelistButton').disabled = false
+                }
+
+            })
+        })
+    }
+
+    $(viewIgnorelistContainer).slideDown()
+    $('#viewIgnorelistButton').css({
+        'background-color' : '#87CEFA',
+        'color' : 'black'
+    })
+    createElement('button', 'Close', '#666699', 'ignorelistCloseButton', viewIgnorelistContainer, () => {
+        document.getElementById('viewIgnorelistButton').disabled = false
+        viewIgnorelistContainer.style.display = 'none'
+            while (viewIgnorelistContainer.firstChild) {
+                viewIgnorelistContainer.removeChild(viewIgnorelistContainer.firstChild)
+            }
+    })
+})
+
+createElement('button', 'Reset ignore list', '#ff3300', 'resetIgnorelistButton', ignoreListContainer, () => {
+    if (!confirm('Reset ignore list?')) return
+    else {
+        localStorage.clear('')
+        ignoreList = []
+        resetAlarmsColors ()
+        alert('Ignore list deleted')
+    }
+})
+
+function resetAlarmsColors () {
+    for (alarm of alarmsContainerArray) {
+        if (alarm.style.backgroundColor == 'grey') {
+            let alarmClassNameToUpperCase = alarm.className.toUpperCase()
+
+            if (alarmClassNameToUpperCase.includes('CRITICAL')) {
+                alarm.style.backgroundColor = criticalColor
+            } else if (alarmClassNameToUpperCase.includes('MAJOR')) {
+                alarm.style.backgroundColor = majorColor
+            } else if (alarmClassNameToUpperCase.includes('MINOR')) {
+                alarm.style.backgroundColor = minorColor
+            }
+        }
+    }
+}
+
+let ignoreListButtons = [document.getElementById('addIgnorelistButton'), document.getElementById('viewIgnorelistButton'), document.getElementById('resetIgnorelistButton')]
+ignoreListButtons.forEach(element => {
+    element.style.color = 'black'
+    element.style.fontWeight = 'bold'
+    element.style.border = 'none'
+    element.style.outline = 'none'
+    element.style.borderRadius = '2px'
+    element.style.margin = '0 2px 0 2px'
+})
+
+function ignore (ci, title) {
+    for (alarm of alarmsContainerArray) {
+        if (alarm.innerText.includes(ci) && alarm.innerText.includes(title)) {
+            alarm.style.backgroundColor = 'grey'
+        }
+    }
+}
+
+/////////////////////////////////////////////////////JQUERY VISUALISATIONS & ANIMATIONS////////////////////////////////////////////
+
+hoverButtons ('#start', 'black', '#00ff80')
+hoverButtons ('#stop', 'black', '#ff3300')
+
+hoverButtons ('#viewIgnorelistButton', 'black', '#87CEFA')
+hoverButtons ('#addIgnorelistButton', 'black', '#00ff80')
+hoverButtons ('#resetIgnorelistButton', 'black', '#ff3300')
+
+
+function hoverButtons (buttonId, color, backgroundColor) {
+    $(buttonId).hover( function (){
+        $(buttonId).css({
+            'background-color' : color,
+            'color' : backgroundColor,
+        })
+    },
+        function () {
+            $(buttonId).css({
+                'background-color' : backgroundColor,
+                'color' : color,
+            })
+        }
+    )
 }
