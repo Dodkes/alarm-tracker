@@ -8,7 +8,7 @@ script.src = 'https://code.jquery.com/jquery-3.6.3.min.js'; // Check https://jqu
 document.getElementsByTagName('head')[0].appendChild(script);
 //////////////////////////////////////////////////////////////JQUERY/////////////////////////////////////////////////////////////////
 
-const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired', 'SDWAN API']
+const eventArray = ['interface down', 'node down', 'SITE DOWN', 'No IP connection', 'Host Connection State', 'DNS check', 'holding time expired']
 //MAIN CONTAINER
 const container = document.createElement('div')
 document.body.appendChild(container)
