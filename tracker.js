@@ -503,6 +503,7 @@ ignoreListInputs.forEach(element => {
 })
 
 d.addEventListener('click', (e) => {
+    navigator.clipboard.writeText(e.target.innerText)
     let lengthArray = e.target.innerText.split(' ')
     if (lengthArray.length === 1) {
         inputCI.value = e.target.innerText
