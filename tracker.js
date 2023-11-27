@@ -213,8 +213,12 @@ function setButton (baseTitle, CI) {
 
         let commandCI = CI.innerText
 
-        createElement('button', 'T', 'grey', openedTicketCI, CI, (event) => {
+        createElement('button', 'O', 'grey', openedTicketCI, CI, (event) => {
             window.open('https://boehringer.service-now.com/incident_list.do?sysparm_first_row=1&sysparm_query=state%3d1%5eORstate%3d2%5eORstate%3d3%5eGOTO123TEXTQUERY321%3d' + event.target.id + '+&sysparm_query_encoded=state%3d1%5eORstate%3d2%5eORstate%3d3%5eGOTO123TEXTQUERY321%3dtzoas00018+&sysparm_view=')
+        })
+
+        createElement('button', 'T', 'grey', openedTicketCI, CI, (event) => {
+            window.open('https://boehringer.service-now.com/incident_list.do?sysparm_first_row=1&sysparm_query=GOTO123TEXTQUERY321%3d' + event.target.id + '&sysparm_query_encoded=GOTO123TEXTQUERY321%3d' + event.target.id + '&sysparm_view=')
         })
 
         //commands copy buttons
